@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterLogic : MonoBehaviour
+public class CharacterLogic : Damageable
 {
     [SerializeField] private CharacterStats _characterStats;
     
@@ -12,6 +12,11 @@ public class CharacterLogic : MonoBehaviour
     private void Awake()
     {
         AssignStats(_characterStats);
+    }
+
+    public override void TakeDamage(int damageAmount)
+    {
+        Debug.Log("Character with id; " +  ID + " has taken damage!");
     }
 
     void Update()
@@ -36,5 +41,9 @@ public class CharacterLogic : MonoBehaviour
     {
         _moveSpeed = characterStats.MoveSpeed;
     }
-    
+
+    public DamageableType GetDamageableType()
+    {
+        return DamageableType.Character;
+    }
 }
