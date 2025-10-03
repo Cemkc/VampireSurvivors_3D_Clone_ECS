@@ -9,19 +9,21 @@ public class CharacterLogic : Damageable
     private float _moveSpeed;
     private Vector2 _moveVector;
 
-    private void Awake()
+    protected override void OnAwake()
     {
+        base.OnAwake();
         AssignStats(_characterStats);
+    }
+    
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+        transform.position += new Vector3(_moveVector.x, 0.0f, _moveVector.y) * _moveSpeed * Time.deltaTime;
     }
 
     public override void TakeDamage(int damageAmount)
     {
         Debug.Log("Character with id; " +  ID + " has taken damage!");
-    }
-
-    void Update()
-    {
-        transform.position += new Vector3(_moveVector.x, 0.0f, _moveVector.y) * _moveSpeed * Time.deltaTime;
     }
 
     public void MoveInputCallback(InputAction.CallbackContext ctx)

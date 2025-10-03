@@ -10,20 +10,33 @@ public class DamageBridge : MonoBehaviour
 
     private void Awake()
     {
-        
+        Damageable.OnCreated += DamageableCreatedCallback;
     }
 
     private void Update()
     {
         EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         EntityQuery query = entityManager.CreateEntityQuery(typeof(DamageEvent));
-        NativeArray<DamageEvent> damageEvents = query.ToComponentDataArray<DamageEvent>(Allocator.Temp);
+        NativeArray<Entity> entities = query.ToEntityArray(Allocator.Temp);
         
-        foreach (DamageEvent damageEvent in damageEvents)
+        for (int i = 0; i < entities.Length; i++)
         {
             Debug.Log("Found entity with component Damage Event");
+            
+            DamageEvent damageEvent = entityManager.GetComponentData<DamageEvent>(entities[i]);
             _damageables[damageEvent.id].TakeDamage(damageEvent.amount);
+            
+            entityManager.DestroyEntity(entities[i]);
         }
         
     }
+    
+    private void DamageableCreatedCallback(Damageable damageable)
+    {
+        if (!_damageables.ContainsKey(damageable.ID))
+        {
+            _damageables.Add(damageable.ID, damageable);
+        }
+    }
+    
 }

@@ -10,6 +10,8 @@ public enum DamageableType
 
 public abstract class Damageable : MonoBehaviour
 {
+    public static Action<Damageable> OnCreated;
+    
     private int id;
     protected int _health;
 
@@ -17,8 +19,24 @@ public abstract class Damageable : MonoBehaviour
 
     private void Awake()
     {
-        id = gameObject.GetInstanceID();
+        OnAwake();
     }
+
+    private void Update()
+    {
+        OnUpdate();
+    }
+    
+    #region "MonoBehaviour virtuals" 
+    protected virtual void OnAwake()
+    {
+        id = GetInstanceID();
+        OnCreated?.Invoke(this);
+    }
+
+    protected virtual void OnUpdate(){ }
+    
+    #endregion
 
     public abstract void TakeDamage(int damageAmount);
 
