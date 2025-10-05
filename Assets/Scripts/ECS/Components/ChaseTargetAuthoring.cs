@@ -2,29 +2,28 @@
 using Unity.Entities;
 using UnityEngine;
 
-public struct HitTarget : IComponentData
+public struct ChaseTargetComponent : IComponentData
 {
-    public int TargetID;
+    public TargetType TargetType;
     public int DamageAmount;
     public float HitDistance;
 }
 
-public class HitTargetAuthoring : MonoBehaviour
+public class ChaseTargetAuthoring : MonoBehaviour
 {
-    public int TargetObjectID;
+    public TargetType TargetType;
     public int DamageAmount;
-
     [Range(UnitMoverSystem.REACHED_TARGET_POSITION_DISTANCE_SQ, 50f)]
     public float HitDistance;
     
-    public class Baker : Baker<HitTargetAuthoring>
+    public class Baker : Baker<ChaseTargetAuthoring>
     {
-        public override void Bake(HitTargetAuthoring authoring)
+        public override void Bake(ChaseTargetAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponent(entity, new HitTarget
+            AddComponent(entity, new ChaseTargetComponent
             {
-                TargetID = authoring.TargetObjectID,
+                TargetType = authoring.TargetType,
                 DamageAmount = authoring.DamageAmount,
                 HitDistance = authoring.HitDistance,
             });

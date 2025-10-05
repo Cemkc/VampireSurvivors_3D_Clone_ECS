@@ -1,21 +1,21 @@
 using Unity.Entities;
 using UnityEngine;
 
-public struct EntitiesReferences : IComponentData
+public struct EntityReferences : IComponentData
 {
     public Entity MobPrefabEntity;
 }
 
 public class EntitiesReferencesAuthoring : MonoBehaviour
 {
-    private GameObject MobPrefabGameObject;
+    public GameObject MobPrefabGameObject;
     
     public class Baker : Baker<EntitiesReferencesAuthoring>
     {
         public override void Bake(EntitiesReferencesAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponent(entity, new EntitiesReferences
+            AddComponent(entity, new EntityReferences
             {
                 MobPrefabEntity = GetEntity(authoring.MobPrefabGameObject, TransformUsageFlags.Dynamic),
             });

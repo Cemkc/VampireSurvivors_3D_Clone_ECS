@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class DamageBridge : MonoBehaviour
 {
-    private Dictionary<int, Damageable> _damageables = new();
+    private Dictionary<int, Targetable> _damageables = new();
 
     private void Awake()
     {
-        Damageable.OnCreated += DamageableCreatedCallback;
+        Targetable.OnCreated += DamageableCreatedCallback;
     }
 
     private void Update()
@@ -31,11 +31,11 @@ public class DamageBridge : MonoBehaviour
         
     }
     
-    private void DamageableCreatedCallback(Damageable damageable)
+    private void DamageableCreatedCallback(Targetable targetable)
     {
-        if (!_damageables.ContainsKey(damageable.ID))
+        if (!_damageables.ContainsKey(targetable.ID))
         {
-            _damageables.Add(damageable.ID, damageable);
+            _damageables.Add(targetable.ID, targetable);
         }
     }
     

@@ -4,11 +4,24 @@ using UnityEngine.InputSystem;
 
 public class CharacterInput : MonoBehaviour
 {
+    public static CharacterInput Instance;
+    
     private PlayerInputActions _inputActions; 
     [SerializeField] private CharacterLogic _characterLogic;
-    
+
+    public PlayerInputActions InputActions => _inputActions;
+
     public void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        
         _inputActions = new PlayerInputActions();
     }
 

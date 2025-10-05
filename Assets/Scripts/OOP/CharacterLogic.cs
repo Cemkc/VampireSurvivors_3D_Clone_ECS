@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterLogic : Damageable
+public class CharacterLogic : Targetable
 {
     [SerializeField] private CharacterStats _characterStats;
     
