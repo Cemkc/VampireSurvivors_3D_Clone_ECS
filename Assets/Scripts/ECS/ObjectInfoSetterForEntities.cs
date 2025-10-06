@@ -4,14 +4,14 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class MobTargetSetter : MonoBehaviour
+public class ObjectInfoSetterForEntities : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _targetGameObjects;
     private List<Targetable> _targetables = new List<Targetable>();
 
     private EntityManager _entityManager;
     private GameObjectInfo _gameObjectInfo;
-    private Entity _targetsEntity;
+    private Entity _objectInfoEntity;
 
     private void Awake()
     {
@@ -28,8 +28,8 @@ public class MobTargetSetter : MonoBehaviour
     {
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-        _targetsEntity = _entityManager.CreateEntity();
-        DynamicBuffer<GameObjectInfo> buffer = _entityManager.AddBuffer<GameObjectInfo>(_targetsEntity);
+        _objectInfoEntity = _entityManager.CreateEntity();
+        DynamicBuffer<GameObjectInfo> buffer = _entityManager.AddBuffer<GameObjectInfo>(_objectInfoEntity);
 
         foreach (var targetable in _targetables)
         {
@@ -44,7 +44,7 @@ public class MobTargetSetter : MonoBehaviour
 
     private void Update()
     {
-        DynamicBuffer<GameObjectInfo> mobTargetBuffer = _entityManager.GetBuffer<GameObjectInfo>(_targetsEntity);
+        DynamicBuffer<GameObjectInfo> mobTargetBuffer = _entityManager.GetBuffer<GameObjectInfo>(_objectInfoEntity);
 
         for (int i = 0; i < mobTargetBuffer.Length; i++)
         {
