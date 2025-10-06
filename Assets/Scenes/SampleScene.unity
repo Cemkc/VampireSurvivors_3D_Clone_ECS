@@ -1026,7 +1026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fad0165d30f3ba43ba09adb82a30b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetType: 1
+  gameObjectType: 1
   _characterStats: {fileID: 11400000, guid: e6ebb7b86380d894ab2480212ce4d801, type: 2}
 --- !u!1 &1736168113
 GameObject:
