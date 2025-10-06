@@ -6,6 +6,7 @@ using UnityEngine;
 
 partial struct ChaseTargetSystem : ISystem
 {
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
@@ -17,7 +18,7 @@ partial struct ChaseTargetSystem : ISystem
         EntityCommandBuffer ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
 
-        if (!SystemAPI.TryGetSingletonBuffer(out DynamicBuffer<MobTarget> targetBuffer))
+        if (!SystemAPI.TryGetSingletonBuffer(out DynamicBuffer<GameObjectInfo> goInfoBuffer))
         {
             return;
         }
@@ -25,14 +26,14 @@ partial struct ChaseTargetSystem : ISystem
         foreach (var (localTransform, unitMover, chaseTargetComponent, entity) in SystemAPI
                      .Query<RefRO<LocalTransform>, RefRW<UnitMover>, RefRO<ChaseTargetComponent>>().WithEntityAccess())
         {
-            MobTarget target = default;
+            GameObjectInfo target = default;
             bool targetMatch = false;
 
-            foreach (var targetElement in targetBuffer)
+            foreach (var goInfo in goInfoBuffer)
             {
-                if (chaseTargetComponent.ValueRO.TargetType == targetElement.TargetType)
+                if (chaseTargetComponent.ValueRO.GameObjectType == goInfo.ObjectType)
                 {
-                    target = targetElement;
+                    target = goInfo;
                     targetMatch = true;
                     break;
                 }

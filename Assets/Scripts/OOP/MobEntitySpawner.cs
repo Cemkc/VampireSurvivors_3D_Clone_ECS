@@ -26,9 +26,9 @@ public class MobEntitySpawner : MonoBehaviour
                 Entity newMob = _entityManager.Instantiate(_entityReferences.MobPrefabEntity);
                 float3 position = new float3
                 {
-                    x = transform.localPosition.x + math.floor(i / 50),
-                    y = transform.localPosition.y + i % 50,
-                    z = transform.localPosition.z
+                    x = transform.localPosition.x + math.floor(i / 10),
+                    y = transform.localPosition.y,
+                    z = transform.localPosition.z + i % 10,
                 };
                 _entityManager.SetComponentData(newMob, new LocalTransform
                 {

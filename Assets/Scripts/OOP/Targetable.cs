@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum DamageableType
 {
@@ -13,11 +14,11 @@ public abstract class Targetable : MonoBehaviour
     public static Action<Targetable> OnCreated;
     
     private int id;
-    [SerializeField] private TargetType _targetType = TargetType.Character1; 
+    [FormerlySerializedAs("_targetType")] [SerializeField] private GameObjectType gameObjectType = GameObjectType.Character1; 
     protected int _health;
 
     public int ID => id;
-    public TargetType TargetType => _targetType;
+    public GameObjectType GameObjectType => gameObjectType;
 
     private void Awake()
     {

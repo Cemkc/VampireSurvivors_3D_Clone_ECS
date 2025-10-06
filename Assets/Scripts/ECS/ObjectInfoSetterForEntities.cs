@@ -10,7 +10,7 @@ public class MobTargetSetter : MonoBehaviour
     private List<Targetable> _targetables = new List<Targetable>();
 
     private EntityManager _entityManager;
-    private MobTarget _mobTarget;
+    private GameObjectInfo _gameObjectInfo;
     private Entity _targetsEntity;
 
     private void Awake()
@@ -29,14 +29,14 @@ public class MobTargetSetter : MonoBehaviour
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
         _targetsEntity = _entityManager.CreateEntity();
-        DynamicBuffer<MobTarget> buffer = _entityManager.AddBuffer<MobTarget>(_targetsEntity);
+        DynamicBuffer<GameObjectInfo> buffer = _entityManager.AddBuffer<GameObjectInfo>(_targetsEntity);
 
         foreach (var targetable in _targetables)
         {
-            buffer.Add(new MobTarget
+            buffer.Add(new GameObjectInfo
             {
                 ID = targetable.ID,
-                TargetType = targetable.TargetType,
+                ObjectType = targetable.GameObjectType,
                 Position = float3.zero,
             });
         }
@@ -44,15 +44,15 @@ public class MobTargetSetter : MonoBehaviour
 
     private void Update()
     {
-        DynamicBuffer<MobTarget> mobTargetBuffer = _entityManager.GetBuffer<MobTarget>(_targetsEntity);
+        DynamicBuffer<GameObjectInfo> mobTargetBuffer = _entityManager.GetBuffer<GameObjectInfo>(_targetsEntity);
 
         for (int i = 0; i < mobTargetBuffer.Length; i++)
         {
-            MobTarget target = mobTargetBuffer[i];
+            GameObjectInfo target = mobTargetBuffer[i];
 
             foreach (var targetable in _targetables)
             {
-                if (target.TargetType == targetable.TargetType)
+                if (target.ObjectType == targetable.GameObjectType)
                 {
                     target.Position = targetable.transform.position;
                     mobTargetBuffer[i] = target;
