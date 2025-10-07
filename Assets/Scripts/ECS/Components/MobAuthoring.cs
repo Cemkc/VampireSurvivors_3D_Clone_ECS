@@ -3,6 +3,8 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+public struct Mob : IComponentData { }
+
 public struct ChaseTargetComponent : IComponentData
 {
     public GameObjectType GameObjectType;
@@ -10,16 +12,16 @@ public struct ChaseTargetComponent : IComponentData
     public float HitDistance;
 }
 
-public class ChaseTargetAuthoring : MonoBehaviour
+public class MobAuthoring : MonoBehaviour
 {
     [FormerlySerializedAs("TargetType")] public GameObjectType gameObjectType;
     public int DamageAmount;
     [Range(UnitMoverSystem.REACHED_TARGET_POSITION_DISTANCE_SQ, 50f)]
     public float HitDistance;
     
-    public class Baker : Baker<ChaseTargetAuthoring>
+    public class Baker : Baker<MobAuthoring>
     {
-        public override void Bake(ChaseTargetAuthoring authoring)
+        public override void Bake(MobAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new ChaseTargetComponent
@@ -28,6 +30,8 @@ public class ChaseTargetAuthoring : MonoBehaviour
                 DamageAmount = authoring.DamageAmount,
                 HitDistance = authoring.HitDistance,
             });
+            
+            AddComponent(entity, new Mob());
         }
     }
 }

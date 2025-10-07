@@ -21,7 +21,7 @@ public class MobEntitySpawner : MonoBehaviour
     {
         if (CharacterInput.Instance.InputActions.Player.Jump.WasPerformedThisFrame())
         {
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Entity newMob = _entityManager.Instantiate(_entityReferences.MobPrefabEntity);
                 float3 position = new float3
@@ -37,8 +37,6 @@ public class MobEntitySpawner : MonoBehaviour
                     Scale = 1,
                 });
             }
-            
-            Debug.Log("Spawned new ECS enemy entity from MonoBehaviour!");
         }
 
     }

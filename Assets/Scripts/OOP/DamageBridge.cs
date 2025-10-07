@@ -16,15 +16,15 @@ public class DamageBridge : MonoBehaviour
     private void Update()
     {
         EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        EntityQuery query = entityManager.CreateEntityQuery(typeof(DamageEvent));
+        EntityQuery query = entityManager.CreateEntityQuery(typeof(MobDamageGivenEvent));
         NativeArray<Entity> entities = query.ToEntityArray(Allocator.Temp);
         
         for (int i = 0; i < entities.Length; i++)
         {
             Debug.Log("Found entity with component Damage Event");
             
-            DamageEvent damageEvent = entityManager.GetComponentData<DamageEvent>(entities[i]);
-            _damageables[damageEvent.id].TakeDamage(damageEvent.amount);
+            MobDamageGivenEvent mobDamageGivenEvent = entityManager.GetComponentData<MobDamageGivenEvent>(entities[i]);
+            _damageables[mobDamageGivenEvent.Id].TakeDamage(mobDamageGivenEvent.Amount);
             
             entityManager.DestroyEntity(entities[i]);
         }

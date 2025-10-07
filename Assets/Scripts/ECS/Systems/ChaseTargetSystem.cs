@@ -52,10 +52,10 @@ partial struct ChaseTargetSystem : ISystem
             if (distanceSq <= chaseTargetComponent.ValueRO.HitDistance)
             {
                 Entity e = ecb.CreateEntity();
-                ecb.AddComponent(e, new DamageEvent
+                ecb.AddComponent(e, new MobDamageGivenEvent
                 {
-                    id = target.ID,
-                    amount = chaseTargetComponent.ValueRO.DamageAmount,
+                    Id = target.ID,
+                    Amount = chaseTargetComponent.ValueRO.DamageAmount,
                 });
                 
                 ecb.DestroyEntity(entity);
