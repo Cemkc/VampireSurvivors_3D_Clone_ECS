@@ -30,6 +30,10 @@ internal partial struct WeaponManagerSystem : ISystem
             {
                 foreach (var (weaponEntity, entity) in SystemAPI.Query<RefRW<Weapon>>().WithEntityAccess())
                 {
+                    if (SystemAPI.TryGetSingleton(out ActiveCollisionPairMap ActiveCollisionPairSet))
+                    {
+                        
+                    }
                     ecb.DestroyEntity(entity);
                 }
 

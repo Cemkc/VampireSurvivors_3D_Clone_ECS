@@ -36,7 +36,7 @@ internal partial struct WeaponSystem : ISystem
         {
             float3 pivot = gameObjectInfo.Position;
     
-            weapon.ValueRW.Angle += weapon.ValueRO.RotateSpeed * SystemAPI.Time.DeltaTime;
+            //weapon.ValueRW.Angle += weapon.ValueRO.RotateSpeed * SystemAPI.Time.DeltaTime;
             float angle = weapon.ValueRO.Angle + ((math.PI2 / weaponManager.NumberOfWeapons) * weapon.ValueRO.Number);
 
             float3 positionOnCircle = new float3(math.sin(angle), 0.0f, math.cos(angle));
@@ -48,19 +48,19 @@ internal partial struct WeaponSystem : ISystem
             localTransform.ValueRW.Rotation = quaternion.LookRotation(weaponDirection, new float3(0.0f, 1.0f, 0.0f));
             localTransform.ValueRW.Scale = 1.0f;
             
-            distanceHitList.Clear();
-            CollisionFilter collisionFilter = new CollisionFilter
-            {
-                BelongsTo = ~0u,
-                CollidesWith = 1u << 6,
-                GroupIndex = 0,
-            };
-
-            if (collisionWorld.OverlapBox(localTransform.ValueRO.Position, quaternion.identity,
-                    new float3(0.5f, 0.5f, 0.5f), ref distanceHitList, collisionFilter))
-            {
-                Debug.Log("Yes something collided.");
-            }
+            // distanceHitList.Clear();
+            // CollisionFilter collisionFilter = new CollisionFilter
+            // {
+            //     BelongsTo = ~0u,
+            //     CollidesWith = 1u << 6,
+            //     GroupIndex = 0,
+            // };
+            //
+            // if (collisionWorld.OverlapBox(localTransform.ValueRO.Position, quaternion.identity,
+            //         new float3(0.5f, 0.5f, 0.5f), ref distanceHitList, collisionFilter))
+            // {
+            //     Debug.Log("Yes something collided.");
+            // }
 
         }
     }

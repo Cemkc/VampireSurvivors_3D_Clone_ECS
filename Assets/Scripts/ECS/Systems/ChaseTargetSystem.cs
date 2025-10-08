@@ -26,40 +26,40 @@ partial struct ChaseTargetSystem : ISystem
         foreach (var (localTransform, unitMover, chaseTargetComponent, entity) in SystemAPI
                      .Query<RefRO<LocalTransform>, RefRW<UnitMover>, RefRO<ChaseTargetComponent>>().WithEntityAccess())
         {
-            GameObjectInfo target = default;
-            bool targetMatch = false;
-
-            foreach (var goInfo in goInfoBuffer)
-            {
-                if (chaseTargetComponent.ValueRO.GameObjectType == goInfo.ObjectType)
-                {
-                    target = goInfo;
-                    targetMatch = true;
-                    break;
-                }
-            }
-            
-            if(!targetMatch) continue;
-
-            UnitMover unitMoverComponent = unitMover.ValueRO;
-            unitMoverComponent.targetPosition = target.Position;
-            unitMover.ValueRW = unitMoverComponent;
-            
-            float3 direction = target.Position - localTransform.ValueRO.Position;
-            float distanceSq = math.lengthsq(direction);
-
-            // chaseTargetComponent.ValueRO.HitDistance made sure to be greater than UnitMoverSystem stop distance.
-            if (distanceSq <= chaseTargetComponent.ValueRO.HitDistance)
-            {
-                Entity e = ecb.CreateEntity();
-                ecb.AddComponent(e, new MobDamageGivenEvent
-                {
-                    Id = target.ID,
-                    Amount = chaseTargetComponent.ValueRO.DamageAmount,
-                });
-                
-                ecb.DestroyEntity(entity);
-            }
+            // GameObjectInfo target = default;
+            // bool targetMatch = false;
+            //
+            // foreach (var goInfo in goInfoBuffer)
+            // {
+            //     if (chaseTargetComponent.ValueRO.GameObjectType == goInfo.ObjectType)
+            //     {
+            //         target = goInfo;
+            //         targetMatch = true;
+            //         break;
+            //     }
+            // }
+            //
+            // if(!targetMatch) continue;
+            //
+            // UnitMover unitMoverComponent = unitMover.ValueRO;
+            // unitMoverComponent.targetPosition = target.Position;
+            // unitMover.ValueRW = unitMoverComponent;
+            //
+            // float3 direction = target.Position - localTransform.ValueRO.Position;
+            // float distanceSq = math.lengthsq(direction);
+            //
+            // // chaseTargetComponent.ValueRO.HitDistance made sure to be greater than UnitMoverSystem stop distance.
+            // if (distanceSq <= chaseTargetComponent.ValueRO.HitDistance)
+            // {
+            //     Entity e = ecb.CreateEntity();
+            //     ecb.AddComponent(e, new MobDamageGivenEvent
+            //     {
+            //         Id = target.ID,
+            //         Amount = chaseTargetComponent.ValueRO.DamageAmount,
+            //     });
+            //     
+            //     ecb.DestroyEntity(entity);
+            // }
         }
     }
 }
