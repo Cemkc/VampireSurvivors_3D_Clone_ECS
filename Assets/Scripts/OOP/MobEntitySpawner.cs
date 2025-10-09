@@ -21,7 +21,7 @@ public class MobEntitySpawner : MonoBehaviour
     {
         if (CharacterInput.Instance.InputActions.Player.Jump.WasPerformedThisFrame())
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 Entity newMob = _entityManager.Instantiate(_entityReferences.MobPrefabEntity);
                 float3 position = new float3
@@ -36,6 +36,10 @@ public class MobEntitySpawner : MonoBehaviour
                     Rotation = quaternion.identity,
                     Scale = 1,
                 });
+                
+                UnitMover unitMover = _entityManager.GetComponentData<UnitMover>(newMob);
+                unitMover.targetPosition = position;
+                _entityManager.SetComponentData(newMob, unitMover);
             }
         }
 

@@ -30,10 +30,6 @@ internal partial struct WeaponManagerSystem : ISystem
             {
                 foreach (var (weaponEntity, entity) in SystemAPI.Query<RefRW<Weapon>>().WithEntityAccess())
                 {
-                    if (SystemAPI.TryGetSingleton(out ActiveCollisionPairMap ActiveCollisionPairSet))
-                    {
-                        
-                    }
                     ecb.DestroyEntity(entity);
                 }
 
@@ -54,11 +50,11 @@ internal partial struct WeaponManagerSystem : ISystem
                 
                 // Usage of entity manager instead of ecb to spawn the weapons is safe because
                 // This line is not iterating a query, and it is on the main thread.   
-                state.EntityManager.Instantiate(weaponManager.ValueRO.WeaponEntityPrefab, weapons);
+                ecb.Instantiate(weaponManager.ValueRO.WeaponEntityPrefab, weapons);
 
                 for (int i = 0; i < weapons.Length; i++)
                 {
-                    state.EntityManager.SetComponentData(weapons[i], new Weapon
+                    ecb.AddComponent(weapons[i], new Weapon
                     {
                         Pivot = float3.zero,
                         Number = i,

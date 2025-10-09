@@ -3,7 +3,11 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public struct Mob : IComponentData { }
+public struct Mob : IComponentData
+{
+    public int Health;
+    public int TakenDamageAmount;
+}
 
 public struct ChaseTargetComponent : IComponentData
 {
@@ -14,6 +18,7 @@ public struct ChaseTargetComponent : IComponentData
 
 public class MobAuthoring : MonoBehaviour
 {
+    public int Health = 100;
     [FormerlySerializedAs("TargetType")] public GameObjectType gameObjectType;
     public int DamageAmount;
     [Range(UnitMoverSystem.REACHED_TARGET_POSITION_DISTANCE_SQ, 50f)]
@@ -31,7 +36,11 @@ public class MobAuthoring : MonoBehaviour
                 HitDistance = authoring.HitDistance,
             });
             
-            AddComponent(entity, new Mob());
+            AddComponent(entity, new Mob
+            {
+                Health = authoring.Health,
+                TakenDamageAmount = 0,
+            });
         }
     }
 }

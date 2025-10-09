@@ -12,18 +12,4 @@ public struct Weapon : IComponentData
     public bool ClockWise;
 }
 
-public class WeaponAuthoring : MonoBehaviour
-{
-    public class Baker : Baker<WeaponAuthoring>
-    {
-        public override void Bake(WeaponAuthoring authoring)
-        {
-            Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponent(entity, new Weapon
-            {
-            });
-        }
-    }
-}
-
     

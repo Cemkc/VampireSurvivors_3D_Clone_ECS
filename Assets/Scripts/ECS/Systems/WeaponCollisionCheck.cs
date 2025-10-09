@@ -22,6 +22,8 @@ public partial struct WeaponOverlapSystem : ISystem
             .CreateCommandBuffer(state.WorldUnmanaged);
         
         NativeList<DistanceHit> overlapHits = new NativeList<DistanceHit>(Allocator.Temp);
+        
+        WeaponManager weaponManager = SystemAPI.GetSingleton<WeaponManager>();
 
         // Iterate weapons
         foreach (var (weaponTransform, collisionLogs,weaponCollider, weaponEntity) in
@@ -68,12 +70,12 @@ public partial struct WeaponOverlapSystem : ISystem
                     collisionLogs.RemoveAt(exitIds[i]);
 
                 // 2. Determine new entries
-                for (int i = 0; i < currentHitIds.Length; i++)
+                for (int i = 0; i < overlapHits.Length; i++)
                 {
                     bool alreadyColliding = false;
                     for (int j = 0; j < collisionLogs.Length; j++)
                     {
-                        if (collisionLogs[j].CollidedEntityId == currentHitIds[i])
+                        if (collisionLogs[j].CollidedEntityId == overlapHits[i].Entity.Index)
                         {
                             alreadyColliding = true;
                             break;
@@ -83,7 +85,14 @@ public partial struct WeaponOverlapSystem : ISystem
                     if (!alreadyColliding)
                     {
                         collisionLogs.Add(new CollisionLog { CollidedEntityId = currentHitIds[i] });
-                        Debug.Log($"Weapon {weaponEntity} hit entity {currentHitIds[i]}");
+                        Entity e = ecb.CreateEntity();
+                        ecb.AddComponent(e, new MobDamageTakenEvent
+                        {
+                            Id = currentHitIds[i],
+                            Entity = overlapHits[i].Entity,
+                            Amount = weaponManager.DamagePerHit,
+                        });
+                        // Debug.Log($"Frame: {Time.frameCount}: Weapon {weaponEntity} hit entity {currentHitIds[i]}");
                     }
                 }
             }
