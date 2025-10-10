@@ -9,13 +9,12 @@ public enum DamageableType
     Building
 }
 
-public abstract class Targetable : MonoBehaviour
+public abstract class Targetable : MonoBehaviour, IGameRunning
 {
     public static Action<Targetable> OnCreated;
     
     private int id;
-    [FormerlySerializedAs("_targetType")] [SerializeField] private GameObjectType gameObjectType = GameObjectType.Character1; 
-    protected int _health;
+    [FormerlySerializedAs("_targetType")] [SerializeField] private GameObjectType gameObjectType = GameObjectType.Character1;
 
     public int ID => id;
     public GameObjectType GameObjectType => gameObjectType;

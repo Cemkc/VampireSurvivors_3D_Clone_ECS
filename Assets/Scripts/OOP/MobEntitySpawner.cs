@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-public class MobEntitySpawner : MonoBehaviour
+public class MobEntitySpawner : MonoBehaviour, IGameRunning
 {
     private EntityManager _entityManager;
     private Entity _entityReferencesEntity;
@@ -19,7 +19,7 @@ public class MobEntitySpawner : MonoBehaviour
 
     private void Update()
     {
-        if (CharacterInput.Instance.InputActions.Player.Jump.WasPerformedThisFrame())
+        if (PlayerInput.Instance.InputActions.Player.Jump.WasPerformedThisFrame())
         {
             for (int i = 0; i < 1000; i++)
             {

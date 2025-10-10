@@ -7,7 +7,7 @@ using UnityEngine;
 public class ObjectInfoSetterForEntities : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _targetGameObjects;
-    private List<Targetable> _targetables = new List<Targetable>();
+    private List<Targetable> _targetables = new();
 
     private EntityManager _entityManager;
     private GameObjectInfo _gameObjectInfo;

@@ -2,16 +2,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterInput : MonoBehaviour
+public class PlayerInput : MonoBehaviour
 {
-    public static CharacterInput Instance;
+    public static PlayerInput Instance;
     
     private PlayerInputActions _inputActions; 
     [SerializeField] private CharacterLogic _characterLogic;
 
     public PlayerInputActions InputActions => _inputActions;
 
-    public void Awake()
+    void Awake()
     {
         if (Instance == null)
         {
@@ -21,6 +21,8 @@ public class CharacterInput : MonoBehaviour
         {
             Destroy(this);
         }
+
+        Debug.Log("Player input is initialized!");
         
         _inputActions = new PlayerInputActions();
     }
@@ -28,13 +30,11 @@ public class CharacterInput : MonoBehaviour
     public void OnEnable()
     {
         _inputActions.Player.Enable();
-        
-        _inputActions.Player.Move.SubscribeAll(_characterLogic.MoveInputCallback);
     }
 
     public void OnDisable()
     {
-        _inputActions.Player.Move.UnsubscribeAll(_characterLogic.MoveInputCallback);
+        _inputActions.Player.Disable();
     }
 }
 

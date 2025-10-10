@@ -4,51 +4,68 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
-using UnityEngine;
 
+[BurstCompile]
 internal partial struct WeaponSystem : ISystem
 {
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        // --- Get singletons ---
         WeaponManager weaponManager = SystemAPI.GetSingleton<WeaponManager>();
-        
-        DynamicBuffer<GameObjectInfo> objectInfoBuffer = SystemAPI.GetSingletonBuffer<GameObjectInfo>();
-        GameObjectInfo gameObjectInfo = default;
-        
-        EntityCommandBuffer ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
-            .CreateCommandBuffer(state.WorldUnmanaged);
-        
         PhysicsWorldSingleton physicsWorldSingleton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
-        CollisionWorld collisionWorld = physicsWorldSingleton.CollisionWorld;
-        NativeList<DistanceHit> distanceHitList = new NativeList<DistanceHit>(Allocator.Temp);
-        
-        foreach (var objectInfo in objectInfoBuffer)
+        DynamicBuffer<GameObjectInfo> objectInfoBuffer = SystemAPI.GetSingletonBuffer<GameObjectInfo>();
+
+        // --- Find pivot (Character1 position) ---
+        float3 pivot = default;
+        bool found = false;
+        foreach (var obj in objectInfoBuffer)
         {
-            if (objectInfo.ObjectType == GameObjectType.Character1)
+            if (obj.ObjectType == GameObjectType.Character1)
             {
-                gameObjectInfo = objectInfo;
+                pivot = obj.Position;
+                found = true;
+                break;
             }
         }
-        
-        foreach (var (localTransform, weapon) in 
-                 SystemAPI.Query<RefRW<LocalTransform>, RefRW<Weapon>>())
+        if (!found) return;
+
+        // --- Capture constants for job ---
+        float deltaTime = SystemAPI.Time.DeltaTime;
+        int numberOfWeapons = weaponManager.NumberOfWeapons;
+        float radius = weaponManager.Radius;
+
+        // --- Schedule parallel job ---
+        new WeaponJob
         {
-            float3 pivot = gameObjectInfo.Position;
-    
-            weapon.ValueRW.Angle += weapon.ValueRO.RotateSpeed * SystemAPI.Time.DeltaTime;
-            float angle = weapon.ValueRO.Angle + ((math.PI2 / weaponManager.NumberOfWeapons) * weapon.ValueRO.Number);
+            Pivot = pivot,
+            DeltaTime = deltaTime,
+            Radius = radius,
+            NumberOfWeapons = numberOfWeapons
+        }.ScheduleParallel();
+    }
 
-            float3 positionOnCircle = new float3(math.sin(angle), 0.0f, math.cos(angle));
-            float3 weaponPosition = pivot + positionOnCircle * weaponManager.Radius;
+    [BurstCompile]
+    public partial struct WeaponJob : IJobEntity
+    {
+        public float3 Pivot;
+        public float DeltaTime;
+        public float Radius;
+        public int NumberOfWeapons;
 
-            float3 weaponDirection = math.normalize(weaponPosition - pivot); 
+        void Execute(ref LocalTransform localTransform, ref Weapon weapon)
+        {
+            weapon.Angle += weapon.RotateSpeed * DeltaTime;
+            float angle = weapon.Angle + ((math.PI2 / NumberOfWeapons) * weapon.Number);
 
-            localTransform.ValueRW.Position = weaponPosition;
-            localTransform.ValueRW.Rotation = quaternion.LookRotation(weaponDirection, new float3(0.0f, 1.0f, 0.0f));
-            localTransform.ValueRW.Scale = 1.0f;
+            float3 posOnCircle = new float3(math.sin(angle), 0.0f, math.cos(angle));
+            float3 weaponPos = Pivot + posOnCircle * Radius;
 
+            float3 weaponDir = math.normalize(weaponPos - Pivot);
+
+            localTransform.Position = weaponPos;
+            localTransform.Rotation = quaternion.LookRotation(weaponDir, new float3(0, 1, 0));
+            localTransform.Scale = 1.0f;
         }
     }
 }
-    

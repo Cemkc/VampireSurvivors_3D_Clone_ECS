@@ -2,28 +2,38 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterLogic : Targetable
+public class CharacterLogic : MonoBehaviour, IGameRunning
 {
     [SerializeField] private CharacterStats _characterStats;
-    
     private float _moveSpeed;
     private Vector2 _moveVector;
 
-    protected override void OnAwake()
+    public Action<int> OnDamageTaken;
+
+    void Awake()
     {
-        base.OnAwake();
         AssignStats(_characterStats);
     }
-    
-    protected override void OnUpdate()
+
+    private void OnEnable()
     {
-        base.OnUpdate();
+        if(PlayerInput.Instance)
+            PlayerInput.Instance.InputActions.Player.Move.SubscribeAll(MoveInputCallback);
+    }
+
+    private void Start()
+    {
+        PlayerInput.Instance.InputActions.Player.Move.SubscribeAll(MoveInputCallback);
+    }
+
+    void Update()
+    {
         transform.position += new Vector3(_moveVector.x, 0.0f, _moveVector.y) * _moveSpeed * Time.deltaTime;
     }
 
-    public override void TakeDamage(int damageAmount)
+    private void OnDisable()
     {
-        Debug.Log("Character with id; " +  ID + " has taken damage!");
+        PlayerInput.Instance.InputActions.Player.Move.UnsubscribeAll(MoveInputCallback);
     }
 
     public void MoveInputCallback(InputAction.CallbackContext ctx)
@@ -42,6 +52,11 @@ public class CharacterLogic : Targetable
     private void AssignStats(CharacterStats characterStats)
     {
         _moveSpeed = characterStats.MoveSpeed;
+    }
+
+    public CharacterStats GetStartStats()
+    {
+        return _characterStats;
     }
 
     public DamageableType GetDamageableType()

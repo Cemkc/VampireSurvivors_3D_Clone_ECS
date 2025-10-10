@@ -4,4 +4,6 @@
 public class CharacterStats : ScriptableObject
 {
     public float MoveSpeed;
+
+    public int Health;
 }

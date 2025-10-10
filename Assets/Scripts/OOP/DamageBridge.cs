@@ -4,9 +4,9 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-public class DamageBridge : MonoBehaviour
+public class DamageBridge : MonoBehaviour, IGameRunning
 {
-    private Dictionary<int, Targetable> _damageables = new();
+    private Dictionary<int, Targetable> _targetables = new();
 
     private void Awake()
     {
@@ -21,11 +21,10 @@ public class DamageBridge : MonoBehaviour
         
         for (int i = 0; i < entities.Length; i++)
         {
-            Debug.Log("Found entity with component Damage Event");
-            
             MobDamageGivenEvent mobDamageGivenEvent = entityManager.GetComponentData<MobDamageGivenEvent>(entities[i]);
-            _damageables[mobDamageGivenEvent.Id].TakeDamage(mobDamageGivenEvent.Amount);
-            
+            _targetables.TryGetValue(mobDamageGivenEvent.Id, out Targetable targetable);
+            if (targetable != null) targetable.TakeDamage(mobDamageGivenEvent.Amount);
+
             entityManager.DestroyEntity(entities[i]);
         }
         
@@ -33,9 +32,9 @@ public class DamageBridge : MonoBehaviour
     
     private void DamageableCreatedCallback(Targetable targetable)
     {
-        if (!_damageables.ContainsKey(targetable.ID))
+        if (!_targetables.ContainsKey(targetable.ID))
         {
-            _damageables.Add(targetable.ID, targetable);
+            _targetables.Add(targetable.ID, targetable);
         }
     }
     
