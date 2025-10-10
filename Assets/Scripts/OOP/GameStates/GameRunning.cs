@@ -30,7 +30,7 @@ namespace OOP.GameStates
 
         public override void FixedUpdateState()
         {
-            Debug.Log("Running state");
+            // Debug.Log("Running state");
         }
 
         public override void ExitState()

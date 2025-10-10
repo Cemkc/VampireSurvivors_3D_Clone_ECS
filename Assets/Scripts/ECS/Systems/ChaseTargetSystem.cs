@@ -20,11 +20,10 @@ partial struct ChaseTargetSystem : ISystem
         var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
         var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
 
-        // Get the singleton buffer as a read-only native array.
         if (!SystemAPI.TryGetSingletonBuffer(out DynamicBuffer<GameObjectInfo> goInfoBuffer))
             return;
 
-        var goInfos = goInfoBuffer.AsNativeArray(); // zero-cost view of buffer
+        var goInfos = goInfoBuffer.AsNativeArray();
         var goInfoCount = goInfos.Length;
 
         var job = new ChaseTargetJob
@@ -55,7 +54,6 @@ partial struct ChaseTargetSystem : ISystem
             GameObjectInfo target = default;
             bool targetFound = false;
 
-            // Find the target once — linear search, can optimize later if needed.
             for (int i = 0; i < GoInfoCount; i++)
             {
                 if (chaseTargetComponent.GameObjectType == GoInfos[i].ObjectType)

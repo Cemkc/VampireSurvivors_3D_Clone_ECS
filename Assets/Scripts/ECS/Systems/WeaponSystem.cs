@@ -11,12 +11,10 @@ internal partial struct WeaponSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        // --- Get singletons ---
         WeaponManager weaponManager = SystemAPI.GetSingleton<WeaponManager>();
         PhysicsWorldSingleton physicsWorldSingleton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
         DynamicBuffer<GameObjectInfo> objectInfoBuffer = SystemAPI.GetSingletonBuffer<GameObjectInfo>();
 
-        // --- Find pivot (Character1 position) ---
         float3 pivot = default;
         bool found = false;
         foreach (var obj in objectInfoBuffer)
@@ -30,12 +28,10 @@ internal partial struct WeaponSystem : ISystem
         }
         if (!found) return;
 
-        // --- Capture constants for job ---
         float deltaTime = SystemAPI.Time.DeltaTime;
         int numberOfWeapons = weaponManager.NumberOfWeapons;
         float radius = weaponManager.Radius;
 
-        // --- Schedule parallel job ---
         new WeaponJob
         {
             Pivot = pivot,

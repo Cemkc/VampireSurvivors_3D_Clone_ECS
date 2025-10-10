@@ -43,7 +43,7 @@ namespace OOP.GameStates
 
         public override void ExitState()
         {
-            Debug.Log("Exit paused state!");
+            // Debug.Log("Exit paused state!");
             PlayerInput.Instance.InputActions.UI.Disable();
             _simulationSystemGroup.Enabled = true;
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<InitializationSystemGroup>().Enabled = true;
