@@ -17,7 +17,7 @@ namespace OOP.GameStates
             {
                 if (monoBehaviour is IGameRunning)
                 {
-                    monoBehaviour.gameObject.SetActive(true);
+                    monoBehaviour.enabled = true;
                 }
             }
             
@@ -42,7 +42,7 @@ namespace OOP.GameStates
             {
                 if (monoBehaviour is IGameRunning)
                 {
-                    monoBehaviour.gameObject.SetActive(false);
+                    monoBehaviour.enabled = false;
                 }
             }
         }

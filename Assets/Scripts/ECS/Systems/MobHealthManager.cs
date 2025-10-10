@@ -25,6 +25,7 @@ internal partial struct MobHealthManager : ISystem
         foreach (var damageTakenEvent in SystemAPI.Query<RefRW<MobDamageTakenEvent>>())
         {
             Entity mobEntity = damageTakenEvent.ValueRO.Entity;
+
             Mob mobData = mobs[mobEntity];
             
             mobData.Health -= damageTakenEvent.ValueRO.Amount;

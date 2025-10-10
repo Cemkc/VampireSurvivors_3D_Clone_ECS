@@ -27,7 +27,7 @@ namespace OOP.GameStates
             {
                 if (monoBehaviour is IGamePaused)
                 {
-                    monoBehaviour.gameObject.SetActive(true);
+                    monoBehaviour.enabled = true;
                 }
             }
         }
@@ -53,7 +53,7 @@ namespace OOP.GameStates
             {
                 if (monoBehaviour is IGamePaused)
                 {
-                    monoBehaviour.gameObject.SetActive(false);
+                    monoBehaviour.enabled = false;
                 }
             }
         }

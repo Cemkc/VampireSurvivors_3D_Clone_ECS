@@ -33,7 +33,7 @@ partial struct ChaseTargetSystem : ISystem
             GoInfoCount = goInfoCount
         };
 
-        job.ScheduleParallel();
+        // job.ScheduleParallel();
         
     }
     
