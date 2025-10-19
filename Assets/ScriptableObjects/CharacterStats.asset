@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 10
   Health: 0
-  DamageDigitExplosionChance: 0.2
+  DamageDigitExplosionChance: 0.05

@@ -24,12 +24,14 @@ internal partial struct MobHealthManager : ISystem
         {
             Entity mobEntity = damageTakenEvent.ValueRO.Entity;
 
+            // Entity might have been destroyed somewhere in between so check if it has LocalTransform
+            if (!SystemAPI.HasComponent<LocalTransform>(mobEntity)) continue;
+            
             Mob mobData = mobs[mobEntity];
-            
             mobData.Health -= damageTakenEvent.ValueRO.Amount;
-            
+        
             // Debug.Log($"Frame: {Time.frameCount}: {mobEntity.Index} Mob has taken {damageTakenEvent.ValueRO.Amount} damage. Health is: {mobData.Health}");
-            
+        
             if (mobData.Health <= 0)
             {
                 // Debug.Log("Mob is being destroyed.");
@@ -37,6 +39,7 @@ internal partial struct MobHealthManager : ISystem
             }
 
             mobs[mobEntity] = mobData; 
+            
         }
     }
 }

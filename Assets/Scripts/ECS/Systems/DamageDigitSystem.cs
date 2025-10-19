@@ -39,6 +39,9 @@ internal partial struct DamageDigitSystem : ISystem
         
         foreach (var damageTakenEvent in SystemAPI.Query<RefRW<MobDamageTakenEvent>>())
         {
+            // Entity might have been destroyed somewhere in between so check if it has LocalTransform
+            if(!SystemAPI.HasComponent<LocalTransform>(damageTakenEvent.ValueRO.Entity)) continue;
+            
             Entity digitEntity = digitEcb.Instantiate(entityReferences.ValueRO.DamageDigitPrefabEntity);
             
             // Set the digit's transform to mob's transform with an offset on Y axis.
@@ -83,7 +86,7 @@ internal partial struct DamageDigitSystem : ISystem
         {
             localTransform.ValueRW.Rotation = quaternion.LookRotationSafe(cameraForward, math.up());
 
-            if (localTransform.ValueRO.Position.y > 0f)
+            if (localTransform.ValueRO.Position.y > 0.02f)
             {
                 velocity.ValueRW.Linear.y -= DIGIT_FALL_ACCELERATION * SystemAPI.Time.DeltaTime;
             }
