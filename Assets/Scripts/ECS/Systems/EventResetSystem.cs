@@ -21,6 +21,11 @@ internal partial struct EventResetSystem : ISystem
         {
             ecb.DestroyEntity(entity);
         }
+        
+        foreach (var (digitExplosionEvent, entity) in SystemAPI.Query<RefRW<DigitExplosionEvent>>().WithEntityAccess())
+        {
+            ecb.DestroyEntity(entity);
+        }
     }
 }
     

@@ -45,6 +45,7 @@ Material:
     - _AtlasColumns: 3
     - _AtlasRows: 4
     - _DigitIndex: 0
+    - _Pulse: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors: []

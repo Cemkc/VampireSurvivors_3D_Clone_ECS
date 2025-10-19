@@ -19,8 +19,6 @@ internal partial struct MobHealthManager : ISystem
             .CreateCommandBuffer(state.WorldUnmanaged);
         
         var mobs = SystemAPI.GetComponentLookup<Mob>(false);
-        var materialOverride = SystemAPI.GetComponentLookup<PixelDigitMatOverride>(false);
-        var mobsChildBuffer = SystemAPI.GetBufferLookup<Child>(false);
         
         foreach (var damageTakenEvent in SystemAPI.Query<RefRW<MobDamageTakenEvent>>())
         {
@@ -29,16 +27,6 @@ internal partial struct MobHealthManager : ISystem
             Mob mobData = mobs[mobEntity];
             
             mobData.Health -= damageTakenEvent.ValueRO.Amount;
-
-            DynamicBuffer<Child> childrenBuffer = mobsChildBuffer[mobEntity];
-
-            foreach (var child in childrenBuffer)
-            {
-                if (SystemAPI.HasComponent<PixelDigitMatOverride>(child.Value))
-                {
-                    materialOverride[child.Value] = new PixelDigitMatOverride{DigitIndex = 7};
-                }
-            }
             
             // Debug.Log($"Frame: {Time.frameCount}: {mobEntity.Index} Mob has taken {damageTakenEvent.ValueRO.Amount} damage. Health is: {mobData.Health}");
             
