@@ -15,8 +15,8 @@ public class CharacterStats : ScriptableObject
 public class XPSettings : ScriptableObject
 {
     [Header("XP gain definitions")] 
+    public int FirstLevelNeededXP;
     public float XpGainMultiplier;
     public int MaxNumberOfLevels;
-    public int FirstLevelNeededXP;
     public int XPIncrementMultiplier;
 }

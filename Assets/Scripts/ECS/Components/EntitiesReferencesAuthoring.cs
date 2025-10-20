@@ -6,6 +6,8 @@ public struct EntityReferences : IComponentData
 {
     public Entity MobPrefabEntity;
     public Entity DamageDigitPrefabEntity;
+    public Entity XPCollectable;
+    
     public Random Random;
 }
 
@@ -13,6 +15,7 @@ public class EntitiesReferencesAuthoring : MonoBehaviour
 {
     public GameObject MobPrefabGameObject;
     public GameObject DamageDigitPrefabGameObject;
+    public GameObject XPCollectable;
     
     public class Baker : Baker<EntitiesReferencesAuthoring>
     {
@@ -23,6 +26,7 @@ public class EntitiesReferencesAuthoring : MonoBehaviour
             {
                 MobPrefabEntity = GetEntity(authoring.MobPrefabGameObject, TransformUsageFlags.Dynamic),
                 DamageDigitPrefabEntity = GetEntity(authoring.DamageDigitPrefabGameObject, TransformUsageFlags.Dynamic),
+                XPCollectable = GetEntity(authoring.XPCollectable, TransformUsageFlags.Dynamic),
                 Random = new Random((uint)UnityEngine.Random.Range(0, 1000)),
             });
         }

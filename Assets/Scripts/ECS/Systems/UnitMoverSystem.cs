@@ -38,10 +38,13 @@ public partial struct UnitMoverJob : IJobEntity
         
         moveDirection = math.normalize(moveDirection);
 
-        localTransform.Rotation =
-            math.slerp(localTransform.Rotation,
-                quaternion.LookRotation(moveDirection, math.up()),
-                deltaTime * unitMover.rotationSpeed);
+        if (unitMover.LookAtTarget)
+        {
+            localTransform.Rotation =
+                math.slerp(localTransform.Rotation,
+                    quaternion.LookRotation(moveDirection, math.up()),
+                    deltaTime * unitMover.rotationSpeed);   
+        }
 
         physicsVelocity.Linear = moveDirection * unitMover.moveSpeed;
         physicsVelocity.Angular = float3.zero;

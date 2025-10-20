@@ -9,44 +9,81 @@ public struct LevelDefinition
     public int NeededXPtoComplete;
 }
 
+public struct XPGainEventInfo
+{
+    public int CurrentLevel;
+    public int CurrentXP;
+    public int GainedXP;
+    public int NextLevelRequiredXP;
+}
+
 public class CharacterXPManager : MonoBehaviour
 {
+    public static CharacterXPManager Instance;
+    
     [SerializeField] private XPSettings m_XPSettingsAsset;
     private XPSettings m_XPSettings;
+
+    public Action<XPGainEventInfo> OnXPGain;
+    public Action<int> OnLevelUp;
     
-    private int m_currentXP;
-    private int m_characterLevel;
+    private int m_CurrentXP;
+    private int m_CharacterLevel;
 
     private Dictionary<int, LevelDefinition> m_levelDefinitions = new();
     
+    
     private void Awake()
     {
-        m_XPSettings = Instantiate(m_XPSettingsAsset);
-
-        int neededXP = m_XPSettings.FirstLevelNeededXP;
-        for (int i = 0; i < m_XPSettings.MaxNumberOfLevels; i++)
+        if (Instance == null)
         {
-            LevelDefinition levelDefinition = new LevelDefinition
-            {
-                LevelNumber = i + 1,
-                NeededXPtoComplete = neededXP,
-            };
-
-            m_levelDefinitions.TryAdd(i + 1, levelDefinition);
-
-            neededXP += neededXP * m_XPSettings.XPIncrementMultiplier;
+            Instance = this;
         }
-
-        m_characterLevel = 1;
+        else
+        {
+            Debug.LogWarning("Can not have multiple instances of a singleton class.");
+            Destroy(this);
+        }
+        
+        m_XPSettings = Instantiate(m_XPSettingsAsset);
     }
-
-    private void FixedUpdate()
+    
+    public int GetXPRequiredForLevel(int level)
     {
-        m_characterLevel = m_currentXP;
+        // Simple quadratic progression (customize as needed)
+        float firsLvlXP = m_XPSettings.FirstLevelNeededXP;
+        float quadScale = m_XPSettings.XpGainMultiplier;
+        return (int)(firsLvlXP * Mathf.Pow(level, quadScale));
     }
 
     public void GainXP(int amount)
     {
-        m_currentXP += (int)(amount * m_XPSettings.XpGainMultiplier);
+        if (amount <= 0)
+        {
+            Debug.LogWarning("Tried to add non-positive XP.");
+            return;
+        }
+
+        m_CurrentXP += amount;
+
+        // Handle multiple level-ups in one XP gain
+        while (m_CurrentXP >= GetXPRequiredForLevel(m_CharacterLevel + 1))
+        {
+            m_CurrentXP -= GetXPRequiredForLevel(m_CharacterLevel + 1);
+            m_CharacterLevel++;
+            OnLevelUp?.Invoke(m_CharacterLevel);
+        }
+        
+        OnXPGain?.Invoke(new XPGainEventInfo
+        {
+            CurrentLevel = m_CharacterLevel,
+            CurrentXP = m_CurrentXP,
+            GainedXP = amount,
+            NextLevelRequiredXP = GetXPRequiredForLevel(m_CharacterLevel)
+        });
+    }
+    
+    private void FixedUpdate()
+    {
     }
 }

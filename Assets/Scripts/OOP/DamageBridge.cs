@@ -4,30 +4,38 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-public class DamageBridge : MonoBehaviour, IGameRunning
+
+[UpdateInGroup(typeof(LateSimulationSystemGroup))]
+public partial class DamageBridgeSystem : SystemBase
 {
     private Dictionary<int, Targetable> _targetables = new();
-
-    private void Awake()
+    
+    protected override void OnCreate()
     {
         Targetable.OnCreated += DamageableCreatedCallback;
     }
 
-    private void Update()
+    protected override void OnDestroy()
     {
-        EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        EntityQuery query = entityManager.CreateEntityQuery(typeof(MobDamageGivenEvent));
-        NativeArray<Entity> entities = query.ToEntityArray(Allocator.Temp);
-        
-        for (int i = 0; i < entities.Length; i++)
-        {
-            MobDamageGivenEvent mobDamageGivenEvent = entityManager.GetComponentData<MobDamageGivenEvent>(entities[i]);
-            _targetables.TryGetValue(mobDamageGivenEvent.Id, out Targetable targetable);
-            if (targetable != null) targetable.TakeDamage(mobDamageGivenEvent.Amount);
+        Targetable.OnCreated -= DamageableCreatedCallback;
+    }
 
-            entityManager.DestroyEntity(entities[i]);
+    protected override void OnUpdate()
+    {
+        var ecb = new EntityCommandBuffer(Allocator.TempJob);
+        
+        foreach (var (damageEvent, entity) in SystemAPI.Query<RefRO<MobDamageGivenEvent>>().WithEntityAccess())
+        {
+            if (_targetables.TryGetValue(damageEvent.ValueRO.Id, out Targetable targetable))
+            {
+                targetable.TakeDamage(damageEvent.ValueRO.Amount);
+            }
+            
+            ecb.DestroyEntity(entity);
         }
         
+        ecb.Playback(EntityManager);
+        ecb.Dispose();
     }
     
     private void DamageableCreatedCallback(Targetable targetable)
@@ -37,5 +45,4 @@ public class DamageBridge : MonoBehaviour, IGameRunning
             _targetables.Add(targetable.ID, targetable);
         }
     }
-    
 }

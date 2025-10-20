@@ -204,7 +204,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 302271191}
-  - component: {fileID: 302271192}
   m_Layer: 0
   m_Name: DamageBridge
   m_TagString: Untagged
@@ -227,18 +226,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1736168114}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &302271192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 302271190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dfd7d1d7cec43b6a771d4d2d613e8f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,8 +885,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1200.3, y: 0}
+  m_AnchoredPosition: {x: 6.0670166, y: 0}
+  m_SizeDelta: {x: 1905.531, y: -14.056}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1048643669
 MonoBehaviour:
@@ -921,7 +908,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -6506105160274925290, guid: 25ca2528409a30f4e827cb2d05c772bb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -958,7 +945,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1162241216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1054,7 +1041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 854d0403c9fbe844d97ca96822a8200b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xpFilledbar: {fileID: 0}
+  m_XPFillBar: {fileID: 1048643668}
 --- !u!1 &1190814490
 GameObject:
   m_ObjectHideFlags: 0
@@ -1090,8 +1077,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -42}
-  m_SizeDelta: {x: -720.1492, y: 40.3682}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 40.368}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1190814492
 MonoBehaviour:
@@ -1113,7 +1100,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 1932520997363718593, guid: 3884787ef484b9641b8d705dfa15ea9d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1524,5 +1511,5 @@ SceneRoots:
   - {fileID: 1944549801}
   - {fileID: 1260400799}
   - {fileID: 1162241219}
-  - {fileID: 1196242194}
   - {fileID: 1528058403}
+  - {fileID: 1196242194}

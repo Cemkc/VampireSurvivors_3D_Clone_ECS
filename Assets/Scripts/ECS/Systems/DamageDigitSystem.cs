@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
@@ -12,24 +13,20 @@ internal partial struct DamageDigitSystem : ISystem
     public const float DIGIT_FALL_ACCELERATION = 40f;
     public const float DIGIT_INITIAL_VELOCITY = 3.0f;
     
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate<EntityReferences>();
     }
 
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         EntityCommandBuffer ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
 
         SystemAPI.TryGetSingleton(out CharacterStatsComponent characterStats);
-        
-        float3 cameraForward = float3.zero;
-        if (Camera.main != null)
-        {
-            cameraForward = Camera.main.transform.forward;
-        }
         
         // var parentLookup = SystemAPI.GetComponentLookup<Parent>(true);
         // var transformLookup = SystemAPI.GetComponentLookup<LocalTransform>(true);
@@ -51,7 +48,7 @@ internal partial struct DamageDigitSystem : ISystem
             LocalTransform digitTransform = new LocalTransform
             {
                 Position = new float3(mobTransform.Position.x, mobTransform.Position.y + 1.5f, mobTransform.Position.z),
-                Rotation = quaternion.LookRotation(cameraForward, math.up()),
+                Rotation = quaternion.identity,
                 Scale = digitPrefabTransform.Scale
             };
             
@@ -83,9 +80,7 @@ internal partial struct DamageDigitSystem : ISystem
         
         foreach (var (localTransform, velocity, damageDigit, entity) in SystemAPI
                      .Query<RefRW<LocalTransform>, RefRW<PhysicsVelocity>, RefRW<DamageDigit>>().WithEntityAccess())
-        {
-            localTransform.ValueRW.Rotation = quaternion.LookRotationSafe(cameraForward, math.up());
-
+        {   
             if (localTransform.ValueRO.Position.y > 0.02f)
             {
                 velocity.ValueRW.Linear.y -= DIGIT_FALL_ACCELERATION * SystemAPI.Time.DeltaTime;

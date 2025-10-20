@@ -36,6 +36,20 @@ internal partial struct MobHealthManager : ISystem
             {
                 // Debug.Log("Mob is being destroyed.");
                 ecb.DestroyEntity(mobEntity);
+
+                try
+                {
+                    var localTransform = SystemAPI.GetComponent<LocalTransform>(mobEntity);
+                    Entity mobDeathEvent = ecb.CreateEntity();
+                    ecb.AddComponent(mobDeathEvent, new MobDeathEvent
+                    {
+                        LocalTransform = localTransform,
+                    });
+                }
+                catch
+                {
+                    // ignored
+                }
             }
 
             mobs[mobEntity] = mobData; 
