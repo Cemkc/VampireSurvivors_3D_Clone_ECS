@@ -4,7 +4,10 @@ using UnityEngine.InputSystem;
 
 public class CharacterLogic : MonoBehaviour, IGameRunning
 {
-    [SerializeField] private CharacterStats _characterStats;
+    [SerializeField] private CharacterStats _characterStatsAsset;
+    private CharacterStats _characterCharacterStats;
+    public CharacterStats CharacterStats => _characterCharacterStats;
+    
     private float _moveSpeed;
     private Vector2 _moveVector;
 
@@ -12,13 +15,7 @@ public class CharacterLogic : MonoBehaviour, IGameRunning
 
     void Awake()
     {
-        AssignStats(_characterStats);
-    }
-
-    private void OnEnable()
-    {
-        if(PlayerInput.Instance)
-            PlayerInput.Instance.InputActions.Player.Move.SubscribeAll(MoveInputCallback);
+        _characterCharacterStats = Instantiate(_characterStatsAsset);
     }
 
     private void Start()
@@ -28,12 +25,7 @@ public class CharacterLogic : MonoBehaviour, IGameRunning
 
     void Update()
     {
-        transform.position += new Vector3(_moveVector.x, 0.0f, _moveVector.y) * _moveSpeed * Time.deltaTime;
-    }
-
-    private void OnDisable()
-    {
-        PlayerInput.Instance.InputActions.Player.Move.UnsubscribeAll(MoveInputCallback);
+        transform.position += new Vector3(_moveVector.x, 0.0f, _moveVector.y) * _characterCharacterStats.MoveSpeed * Time.deltaTime;
     }
 
     public void MoveInputCallback(InputAction.CallbackContext ctx)
@@ -49,18 +41,23 @@ public class CharacterLogic : MonoBehaviour, IGameRunning
         }
     }
 
-    private void AssignStats(CharacterStats characterStats)
-    {
-        _moveSpeed = characterStats.MoveSpeed;
-    }
-
-    public CharacterStats GetStartStats()
-    {
-        return _characterStats;
-    }
-
     public DamageableType GetDamageableType()
     {
         return DamageableType.Character;
+    }
+
+    public void OnStateEnable()
+    {
+        if(PlayerInput.Instance)
+            PlayerInput.Instance.InputActions.Player.Move.SubscribeAll(MoveInputCallback);
+
+        enabled = true;
+    }
+
+    public void OnStateDisable()
+    {
+        PlayerInput.Instance.InputActions.Player.Move.UnsubscribeAll(MoveInputCallback);
+
+        enabled = false;
     }
 }

@@ -11,7 +11,7 @@ public class CharacterStats : ScriptableObject
     public float DamageDigitExplosionChance;
 }
 
-[CreateAssetMenu(fileName = "XPSettings", menuName = "Settings-Configs/CharacterStats")]
+[CreateAssetMenu(fileName = "XPSettings", menuName = "Settings-Configs/XPSettings")]
 public class XPSettings : ScriptableObject
 {
     [Header("XP gain definitions")] 

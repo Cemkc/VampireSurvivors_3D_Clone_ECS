@@ -1,5 +1,13 @@
+// Monobehaviours that apply these interfaces will be active only in the corresponding states.
 
-public interface IGameRunning {}
+public interface IGameState
+{
+    public void OnStateEnable();
+    public void OnStateDisable();
+}
 
-public interface IGamePaused {}
+public interface IGameRunning : IGameState {}
+
+public interface IGamePaused : IGameState {}
     
+public interface IGameLevelUp : IGameState{}

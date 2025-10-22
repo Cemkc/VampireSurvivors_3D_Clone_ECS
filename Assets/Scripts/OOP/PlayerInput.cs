@@ -22,7 +22,7 @@ public class PlayerInput : MonoBehaviour
             Destroy(this);
         }
 
-        Debug.Log("Player input is initialized!");
+        // Debug.Log("Player input is initialized!");
         
         _inputActions = new PlayerInputActions();
     }

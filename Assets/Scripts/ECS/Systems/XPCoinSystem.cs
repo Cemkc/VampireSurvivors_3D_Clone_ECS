@@ -8,7 +8,7 @@ using UnityEngine;
 internal partial struct XPCoinSystem : ISystem
 {
 
-    public const float XP_COLLECT_DISTANCE_SQ = UnitMoverSystem.REACHED_TARGET_POSITION_DISTANCE_SQ + 0.1f;
+    public const float XP_COLLECT_DISTANCE_SQ = UnitMoverSystem.REACHED_TARGET_POSITION_DISTANCE_SQ;
     
     [BurstCompile]
     public void OnCreate(ref SystemState state)
@@ -27,7 +27,7 @@ internal partial struct XPCoinSystem : ISystem
         
         foreach (var mobDeathEvent in SystemAPI.Query<RefRO<MobDeathEvent>>())
         {
-            Debug.Log("Mob is death alright");
+            // Debug.Log("Mob is death alright");
             Entity xpCollectible = xpSpawnEcb.Instantiate(entityReferences.XPCollectable);
 
             LocalTransform localTransform = SystemAPI.GetComponent<LocalTransform>(entityReferences.XPCollectable);
@@ -57,7 +57,6 @@ internal partial struct XPCoinSystem : ISystem
             if (math.distancesq(localTransform.ValueRO.Position, xpCoin.ValueRO.TargetPosition) <=
                 xpCoin.ValueRO.MagnetPullDistanceSq)
             {
-                Debug.Log("Distance is less than magnet");
                 if (!SystemAPI.IsComponentEnabled<UnitMover>(entity))
                 {
                     SystemAPI.SetComponentEnabled<UnitMover>(entity, true);   
@@ -73,8 +72,7 @@ internal partial struct XPCoinSystem : ISystem
                 {
                     XPAmount = xpCoin.ValueRO.XPAmount,
                 });
-
-                Debug.Log("Coin collected!");
+                
                 esEcb.DestroyEntity(entity);
             }
         }

@@ -1,18 +1,19 @@
+using UnityEngine;
+
 namespace OOP.HFSMScripts
 {
     public abstract class State 
     {
-        protected bool _isRootState = true;
-        protected bool _preserveSubstates = false;
+        private bool _isRootState = true;
         protected IStateMachineRunner _context;
-        protected State _currentSubState;
-        protected State _currentSuperState;
+        protected State m_SubState;
+        protected State m_SuperState;
 
         public State(IStateMachineRunner context) => _context = context;
         
         public State(){}
 
-        public State GetCurrentSubState { get { return _currentSubState; } }
+        public State SubState => m_SubState;
 
         public abstract void EnterState();
 
@@ -23,64 +24,62 @@ namespace OOP.HFSMScripts
         public abstract void ExitState();
 
         public abstract void CheckSwitchState();
-
-        public abstract void InitializeSubState();
-
-        public void UpdateStates(){ // This function allows for a chained multi-substate architecture by calling update of every substate of supdates.
-            UpdateState();
-            if(_currentSubState != null){
-                _currentSubState.UpdateStates();
+        
+        public static void UpdateStates(State state){ // This function allows for a chained multi-substate architecture by calling update of every substate of supdates.
+            if (state.m_SuperState != null)
+            {
+                UpdateStates(state.m_SuperState);
             }
+            
+            state.UpdateState();
         }
 
-        public void FixedUpdateStates(){
-            FixedUpdateState();
-            if(_currentSubState != null){
-                _currentSubState.FixedUpdateStates();  
+        public static void FixedUpdateStates(State state){
+            if (state.m_SuperState != null)
+            {
+                FixedUpdateStates(state.m_SuperState);
             }
+            
+            state.FixedUpdateState();
+        }
+        
+        public static void EnterStates(State state)
+        {
+            if (state.m_SuperState != null)
+            {
+                EnterStates(state.m_SuperState);
+            }
+            state.EnterState();
         }
 
-        public void ExitStates(){
-            if (_preserveSubstates){
-                ExitState();
-                return;
+        public static void ExitStates(State state){
+            if (state.m_SuperState != null)
+            {
+                ExitStates(state.m_SuperState);
             }
-
-            State subState = _currentSubState;
-            while(subState != null){
-                subState.ExitState();
-                subState = subState._currentSubState;
-            }
-            ExitState();
+            
+            state.ExitState();
         }
 
-        protected void SwitchState(State newState){
-            ExitStates();
+        protected void SwitchState(State newState)
+        {
+            ExitStates(this);
+            EnterStates(newState);
 
-            newState.EnterState();
-            if (_preserveSubstates){
-                newState._currentSubState = _currentSubState;
-                newState._currentSubState.SetSuperState(newState);
-            }
-            else{
-                newState.InitializeSubState();
-            }
+            State rootState = newState;
 
-            if(_isRootState){
-                _context.SwitchState(newState);
+            while (rootState.m_SuperState != null)
+            {
+                rootState = rootState.m_SuperState;
             }
-            else if(_currentSuperState != null){
-                _currentSuperState.SetSubState(newState);
-            }
+            
+            _context.SetRunnerState(rootState);
         }
 
-        protected void SetSuperState(State newSuperState){
-            _currentSuperState = newSuperState;
-        }
-
-        protected void SetSubState(State newSubState){
-            _currentSubState = newSubState;
-            _currentSubState.SetSuperState(this);
+        protected void SetSuperState(State superState){
+            _isRootState = false;
+            m_SuperState = superState;
+            superState.m_SubState = this;
         }
     }
 }

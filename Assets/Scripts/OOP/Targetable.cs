@@ -42,6 +42,15 @@ public abstract class Targetable : MonoBehaviour, IGameRunning
 
     public abstract void TakeDamage(int damageAmount);
 
+    public void OnStateEnable()
+    {
+        enabled = true;
+    }
+
+    public void OnStateDisable()
+    {
+        enabled = false;
+    }
 }
     
     

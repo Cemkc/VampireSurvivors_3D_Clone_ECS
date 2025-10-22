@@ -34,6 +34,7 @@ internal partial struct DamageDigitSystem : ISystem
 
         EntityCommandBuffer digitEcb = new EntityCommandBuffer(Allocator.Temp);
         
+        // Create damage digit when the mob takes damage.
         foreach (var damageTakenEvent in SystemAPI.Query<RefRW<MobDamageTakenEvent>>())
         {
             // Entity might have been destroyed somewhere in between so check if it has LocalTransform
@@ -65,9 +66,7 @@ internal partial struct DamageDigitSystem : ISystem
             Random random = entityReferences.ValueRO.Random;
             damageDigitComponent.DamageValue = damageTakenEvent.ValueRO.Amount;
             float explosionChance = random.NextFloat(0f, 1f);
-            Debug.Log("Random: " + explosionChance + " < " +characterStats.DamageDigitExplosionChance);
             damageDigitComponent.IsExplosive = explosionChance < characterStats.DamageDigitExplosionChance;
-            Debug.Log(damageDigitComponent.IsExplosive);
             entityReferences.ValueRW.Random = random;
             digitEcb.SetComponent(digitEntity, damageDigitComponent);
             

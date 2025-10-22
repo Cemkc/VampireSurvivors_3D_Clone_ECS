@@ -44,5 +44,15 @@ public class MobEntitySpawner : MonoBehaviour, IGameRunning
         }
 
     }
+
+    public void OnStateEnable()
+    {
+        enabled = true;
+    }
+
+    public void OnStateDisable()
+    {
+        enabled = false;
+    }
 }
     

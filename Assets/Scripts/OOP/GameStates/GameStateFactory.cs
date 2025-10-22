@@ -10,6 +10,7 @@ namespace OOP.GameStates
         None,
         Running,
         Paused,
+        LevelUp,
     }
     
     public class GameStateFactory
@@ -25,10 +26,13 @@ namespace OOP.GameStates
                 switch (type)
                 {
                     case GameStateType.Running:
-                        _gameStates.Add(GameStateType.Running, new GameRunning(stateMachineRunner, this));
+                        _gameStates.Add(GameStateType.Running, new GameRunningState(stateMachineRunner, this));
                         break;
                     case GameStateType.Paused:
-                        _gameStates.Add(GameStateType.Paused, new GamePaused(stateMachineRunner, this));
+                        _gameStates.Add(GameStateType.Paused, new GamePausedState(stateMachineRunner, this));
+                        break;
+                    case GameStateType.LevelUp:
+                        _gameStates.Add(GameStateType.LevelUp, new LevelUpState(stateMachineRunner, this));
                         break;
                     default:
                         break;

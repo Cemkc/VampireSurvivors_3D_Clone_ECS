@@ -58,6 +58,8 @@ public class CharacterXPManager : MonoBehaviour
 
     public void GainXP(int amount)
     {
+        // Debug.Log("Gained XP!");
+        
         if (amount <= 0)
         {
             Debug.LogWarning("Tried to add non-positive XP.");
@@ -67,9 +69,20 @@ public class CharacterXPManager : MonoBehaviour
         m_CurrentXP += amount;
 
         // Handle multiple level-ups in one XP gain
-        while (m_CurrentXP >= GetXPRequiredForLevel(m_CharacterLevel + 1))
+        // while (m_CurrentXP >= GetXPRequiredForLevel(m_CharacterLevel + 1))
+        // {
+        //     m_CurrentXP -= GetXPRequiredForLevel(m_CharacterLevel + 1);
+        //     m_CharacterLevel++;
+        //     OnLevelUp?.Invoke(m_CharacterLevel);
+        // }
+        
+        while (true)
         {
-            m_CurrentXP -= GetXPRequiredForLevel(m_CharacterLevel + 1);
+            int requiredXP = GetXPRequiredForLevel(m_CharacterLevel + 1);
+            if (requiredXP <= 0 || m_CurrentXP < requiredXP)
+                break;
+    
+            m_CurrentXP -= requiredXP;
             m_CharacterLevel++;
             OnLevelUp?.Invoke(m_CharacterLevel);
         }
@@ -79,11 +92,7 @@ public class CharacterXPManager : MonoBehaviour
             CurrentLevel = m_CharacterLevel,
             CurrentXP = m_CurrentXP,
             GainedXP = amount,
-            NextLevelRequiredXP = GetXPRequiredForLevel(m_CharacterLevel)
+            NextLevelRequiredXP = GetXPRequiredForLevel(m_CharacterLevel + 1)
         });
-    }
-    
-    private void FixedUpdate()
-    {
     }
 }

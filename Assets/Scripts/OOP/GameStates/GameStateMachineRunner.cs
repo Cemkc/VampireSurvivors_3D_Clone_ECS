@@ -17,17 +17,22 @@ namespace OOP.GameStates
             _gameState = _factory.GetGameState(GameStateType.Running);
         }
 
+        private void Start()
+        {
+            State.EnterStates(_gameState);
+        }
+
         private void Update()
         {
-            _gameState.UpdateStates();
+            State.UpdateStates(_gameState);
         }
 
         private void FixedUpdate()
         {
-            _gameState.FixedUpdateStates();
+            State.FixedUpdateStates(_gameState);
         }
 
-        public void SwitchState(State state)
+        public void SetRunnerState(State state)
         {
             _gameState = state;
         }

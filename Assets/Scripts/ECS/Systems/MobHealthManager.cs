@@ -36,19 +36,17 @@ internal partial struct MobHealthManager : ISystem
             {
                 // Debug.Log("Mob is being destroyed.");
                 ecb.DestroyEntity(mobEntity);
+                
+                // Need to check if the entity has transform (to check if it has been destroyed)
 
-                try
+                if (SystemAPI.HasComponent<LocalTransform>(mobEntity))
                 {
                     var localTransform = SystemAPI.GetComponent<LocalTransform>(mobEntity);
                     Entity mobDeathEvent = ecb.CreateEntity();
                     ecb.AddComponent(mobDeathEvent, new MobDeathEvent
                     {
                         LocalTransform = localTransform,
-                    });
-                }
-                catch
-                {
-                    // ignored
+                    });   
                 }
             }
 
