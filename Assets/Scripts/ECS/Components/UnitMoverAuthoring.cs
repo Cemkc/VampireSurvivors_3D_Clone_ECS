@@ -4,6 +4,7 @@ using UnityEngine;
 
 public struct UnitMover : IComponentData, IEnableableComponent
 {
+    public bool TargetOverrideActive;
     public float moveSpeed;
     public float rotationSpeed;
     public float3 targetPosition;
@@ -22,6 +23,7 @@ public class UnitMoverAuthoring : MonoBehaviour
         public override void Bake(UnitMoverAuthoring authoring) {
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new UnitMover {
+                TargetOverrideActive = false,
                 moveSpeed = authoring.moveSpeed,
                 rotationSpeed = authoring.rotationSpeed,
                 LookAtTarget = authoring.LookAtTarget,

@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a68a9a868d244ffeadc7bc771db661fc, type: 3}
-  m_Name: SpeedUpgrade 1
+  m_Script: {fileID: 11500000, guid: 1d03ce65a9be4cb5a4f95b5e4fd234e5, type: 3}
+  m_Name: WeaponUpgrade
   m_EditorClassIdentifier: 
-  FirstLevelBuff: 0.2
-  MultiplierPerLevel: 0.1
+  m_Texture: {fileID: 2800000, guid: 8185f3757a8a496458bf5b9e2b48ccf8, type: 3}
+  m_Description: INCREASE DAMAGE OF ROTATING WEAPON BY 1

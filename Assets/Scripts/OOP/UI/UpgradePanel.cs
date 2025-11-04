@@ -24,8 +24,9 @@ public class UpgradePanel : MonoBehaviour
 
     public void SetUpgrade(CharUpgrade upgrade)
     {
+        Debug.Log(upgrade.Description);
         m_Upgrade = upgrade;
-        m_UpgradeTitle.text = upgrade.GetUpgradeType().ToString();
+        m_UpgradeTitle.text = m_Upgrade.GetUpgradeType().ToString();
         m_UpgradeImage.texture = m_Upgrade.Texture;
         m_UpgradeText.text = m_Upgrade.Description;
     }

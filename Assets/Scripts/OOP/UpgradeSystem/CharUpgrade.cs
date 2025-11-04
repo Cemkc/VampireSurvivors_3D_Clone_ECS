@@ -5,6 +5,8 @@ public enum UpgradeTypes
 {
     None,
     Speed,
+    Weapon,
+    DigitBomb,
 }
 
 public abstract class CharUpgrade : ScriptableObject
@@ -15,6 +17,7 @@ public abstract class CharUpgrade : ScriptableObject
     public Texture Texture => m_Texture;
     public string Description => m_Description;
 
+    public abstract void Init();
     public abstract void ApplyUpgrade();
     public abstract UpgradeTypes GetUpgradeType();
 }

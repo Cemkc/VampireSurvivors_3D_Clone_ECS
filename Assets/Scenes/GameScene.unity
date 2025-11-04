@@ -859,7 +859,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UpgradeAssets:
   - {fileID: 11400000, guid: b025b83a3920ee34ebed141b36dd08cd, type: 2}
-  - {fileID: 11400000, guid: 8080582897ed2274cb2f7293a38b3066, type: 2}
+  - {fileID: 11400000, guid: b59a2c05800fa6142bddc086b8c3368f, type: 2}
+  - {fileID: 11400000, guid: dbf5b5526259cd34fbfaf939f7a5b064, type: 2}
 --- !u!4 &520513731
 Transform:
   m_ObjectHideFlags: 0

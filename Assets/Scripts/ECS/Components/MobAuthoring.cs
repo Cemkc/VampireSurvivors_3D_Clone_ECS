@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 
 public struct Mob : IComponentData
 {
+    public GameObjectType MobTarget;
     public int Health;
     public int TakenDamageAmount;
 }
@@ -38,6 +39,7 @@ public class MobAuthoring : MonoBehaviour
             
             AddComponent(entity, new Mob
             {
+                MobTarget = authoring.gameObjectType,
                 Health = authoring.Health,
                 TakenDamageAmount = 0,
             });

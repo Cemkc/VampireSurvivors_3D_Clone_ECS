@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afbb4aa1b3432c041852d6d8cabff05f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
+  moveSpeed: 15
   rotationSpeed: 0
   LookAtTarget: 0
   Enabled: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetType: 1
   MagnetPullDistanceSq: 50
-  XPAmount: 10
+  XPAmount: 2
 --- !u!114 &8033368115237552631
 MonoBehaviour:
   m_ObjectHideFlags: 0

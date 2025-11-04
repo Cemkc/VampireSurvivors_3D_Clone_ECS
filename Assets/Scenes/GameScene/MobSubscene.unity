@@ -255,7 +255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponObjectPrefab: {fileID: 184485202273541031, guid: a4d757049496aeb4d92148b28063c7f9, type: 3}
   NumberOfWeapons: 3
-  DamagePerHit: 7
+  DamagePerHit: 1
   Cooldown: 3
   ActiveDuration: 3
   Radius: 3

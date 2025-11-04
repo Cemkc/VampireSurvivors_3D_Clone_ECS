@@ -67,7 +67,10 @@ partial struct ChaseTargetSystem : ISystem
             if (!targetFound)
                 return;
 
-            unitMover.targetPosition = target.Position;
+            if (!unitMover.TargetOverrideActive)
+            {
+                unitMover.targetPosition = target.Position;   
+            }
 
             float3 direction = target.Position - localTransform.Position;
             float distanceSq = math.lengthsq(direction);

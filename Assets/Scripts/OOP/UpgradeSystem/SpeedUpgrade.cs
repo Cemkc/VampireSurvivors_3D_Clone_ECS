@@ -14,7 +14,9 @@ public class SpeedUpgrade : CharUpgrade
     {
         return UpgradeTypes.Speed;
     }
-    
+
+    public override void Init() { }
+
     public override void ApplyUpgrade()
     {
         var playerCharacter = GameObject.FindGameObjectWithTag("Player");

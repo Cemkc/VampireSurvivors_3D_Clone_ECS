@@ -46,11 +46,13 @@ public class LevelUpManager : MonoBehaviour, IGameLevelUp
         
         for (int i = 0; i < numberOfUpgrades; i++)
         {
-            int randomIndex = Random.Range(0, charUpgradesCopy.Count); 
+            int randomIndex = Random.Range(0, charUpgradesCopy.Count);
+            charUpgradesCopy[randomIndex].Init();
             m_CurrentUpgrades.Add(charUpgradesCopy[randomIndex]);
             charUpgradesCopy.RemoveAt(randomIndex);
         }
 
+        Debug.Log("Set random upgrades");
         OnUpgradesAssigned?.Invoke(new List<CharUpgrade>(m_CurrentUpgrades));
     }
 
