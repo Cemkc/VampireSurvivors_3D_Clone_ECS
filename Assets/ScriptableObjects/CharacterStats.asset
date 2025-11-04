@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CharacterStats
   m_EditorClassIdentifier: 
   MoveSpeed: 10
-  Health: 0
+  Health: 100
   DamageDigitExplosionChance: 0.005

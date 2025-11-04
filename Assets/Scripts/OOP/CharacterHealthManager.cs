@@ -1,22 +1,30 @@
 using System;
 using UnityEngine;
 
-public class CharacterHurtManager : Targetable, IGameRunning
+public class CharacterHealthManager : Targetable
 {
-    private CharacterLogic _characterLogic;
-    private CharacterStats _characterStats;
+    [SerializeField] private CharacterStats _characterStats;
 
     public Action<int> OnDamageTaken;
-    public Action<Targetable> OnDeath;
+    public Action OnDeath;
     
-    public int Health;
+    private int m_Health;
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+
+        m_Health = _characterStats.Health;
+    }
 
     public override void TakeDamage(int damageAmount)
     {
-        if (Health <= 0)
+        m_Health -= damageAmount;
+        
+        if (m_Health <= 0)
         {
             // TO DO: die.
-            OnDeath?.Invoke(this);
+            OnDeath?.Invoke();
         }
         
         OnDamageTaken?.Invoke(damageAmount);

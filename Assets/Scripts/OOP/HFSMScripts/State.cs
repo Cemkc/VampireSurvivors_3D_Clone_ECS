@@ -61,7 +61,7 @@ namespace OOP.HFSMScripts
             state.ExitState();
         }
 
-        protected void SwitchState(State newState)
+        public void SwitchState(State newState)
         {
             ExitStates(this);
             EnterStates(newState);

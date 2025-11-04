@@ -20,6 +20,12 @@ namespace OOP.GameStates
         private void Start()
         {
             State.EnterStates(_gameState);
+
+            GameObject mainCharacter = GameObject.FindGameObjectWithTag("Player");
+            if (mainCharacter.TryGetComponent(out CharacterHealthManager healthManager))
+            {
+                healthManager.OnDeath += PlayerDeathCallback;
+            }
         }
 
         private void Update()
@@ -35,6 +41,11 @@ namespace OOP.GameStates
         public void SetRunnerState(State state)
         {
             _gameState = state;
+        }
+
+        public void PlayerDeathCallback()
+        {
+            _gameState.SwitchState(_factory.GetGameState(GameStateType.GameOver));
         }
     }
 }
