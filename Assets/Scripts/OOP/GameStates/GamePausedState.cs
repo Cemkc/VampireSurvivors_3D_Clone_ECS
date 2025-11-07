@@ -7,20 +7,15 @@ namespace OOP.GameStates
 {
     public class GamePausedState : GameState
     {
-        private SimulationSystemGroup _simulationSystemGroup;
-
-        public GamePausedState(GameStateMachineRunner context, GameStateFactory factory) : base(context, factory)
-        {
-            _simulationSystemGroup = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SimulationSystemGroup>();   
-        }
+        public GamePausedState(GameStateMachineRunner context, GameStateFactory factory) : base(context, factory) { }
         
         public override void EnterState()
         {
             // Debug.Log("Entered paused state!");
             
             PlayerInput.Instance.InputActions.UI.Enable();
-            _simulationSystemGroup.Enabled = false;
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<InitializationSystemGroup>().Enabled = false;
+            
+            SystemsUtils.SetSystemsEnabled(World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SimulationSystemGroup>(), false);
             
             EnableMonoBehaviours<IGamePaused>();
         }
@@ -38,8 +33,6 @@ namespace OOP.GameStates
         {
             // Debug.Log("Exit paused state!");
             PlayerInput.Instance.InputActions.UI.Disable();
-            _simulationSystemGroup.Enabled = true;
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<InitializationSystemGroup>().Enabled = true;
         }
 
         public override void CheckSwitchState()

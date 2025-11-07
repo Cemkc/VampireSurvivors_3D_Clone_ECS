@@ -979,6 +979,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1552839772 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6001564989158523145, guid: d214e774fdd3692448872739eb51f847, type: 3}
+  m_PrefabInstance: {fileID: 1780066206010049177}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4adff4a32791efa4a98e4b9244886f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1685084581
 GameObject:
   m_ObjectHideFlags: 0
@@ -1182,7 +1193,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1746653385}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1552839772}
+        m_TargetAssemblyTypeName: SceneHandler, Assembly-CSharp
+        m_MethodName: LoadSceneCallback
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: GameScene
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1746653385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1468,6 +1491,63 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1001 &1780066206010049177
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1508395064109285791, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 472.46082
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508395064109285791, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 347.94006
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508395064109285791, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -233.6196
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508395064109285791, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508395064109285791, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508395064109285791, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508395064109285791, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508395064109285791, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508395064109285791, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508395064109285791, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422241107955712581, guid: d214e774fdd3692448872739eb51f847, type: 3}
+      propertyPath: m_Name
+      value: SceneHandler
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d214e774fdd3692448872739eb51f847, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1477,3 +1557,4 @@ SceneRoots:
   - {fileID: 2002285528}
   - {fileID: 1881542800}
   - {fileID: 1486001067}
+  - {fileID: 1780066206010049177}

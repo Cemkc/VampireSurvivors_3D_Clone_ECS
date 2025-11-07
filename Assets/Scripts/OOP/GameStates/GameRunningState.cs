@@ -1,10 +1,13 @@
 using OOP.HFSMScripts;
+using Unity.Entities;
 using UnityEngine;
 
 namespace OOP.GameStates
 {
     public class GameRunningState : GameState
     {
+        private SimulationSystemGroup _simulationSystemGroup;
+        
         public GameRunningState(GameStateMachineRunner context, GameStateFactory factory) : base(context, factory) { }
         
         public override void EnterState()
@@ -13,6 +16,8 @@ namespace OOP.GameStates
             PlayerInput.Instance.InputActions.Player.Enable();
             
             EnableMonoBehaviours<IGameRunning>(true);
+            
+            SystemsUtils.SetSystemsEnabled(World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SimulationSystemGroup>(), true);
             
             CharacterXPManager.Instance.OnLevelUp += LevelUpCallback;
         }
