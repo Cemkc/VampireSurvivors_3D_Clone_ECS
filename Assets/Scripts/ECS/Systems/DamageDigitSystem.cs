@@ -18,6 +18,7 @@ internal partial struct DamageDigitSystem : ISystem
     {
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate<EntityReferences>();
+        state.RequireForUpdate<GameRunningTag>();
     }
 
     [BurstCompile]

@@ -10,6 +10,7 @@ internal partial struct WeaponManagerSystem : ISystem
     {
         state.RequireForUpdate<WeaponManager>();
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+        state.RequireForUpdate<GameRunningTag>();
     }
 
     [BurstCompile]

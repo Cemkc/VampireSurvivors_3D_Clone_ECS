@@ -9,6 +9,7 @@ internal partial struct EventResetSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+        state.RequireForUpdate<GameRunningTag>();
     }
 
     [BurstCompile]

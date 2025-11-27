@@ -10,6 +10,12 @@ partial struct UnitMoverSystem : ISystem
     public const float REACHED_TARGET_POSITION_DISTANCE_SQ = 2f;
 
     [BurstCompile]
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<GameRunningTag>();
+    }
+
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         UnitMoverJob unitMoverJob = new UnitMoverJob {

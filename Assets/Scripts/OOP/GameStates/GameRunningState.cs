@@ -17,7 +17,8 @@ namespace OOP.GameStates
             
             EnableMonoBehaviours<IGameRunning>(true);
             
-            SystemsUtils.SetSystemsEnabled(World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SimulationSystemGroup>(), true);
+            World.DefaultGameObjectInjectionWorld.QuitUpdate = false;
+            // SystemsUtils.SetSystemsEnabled(World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SimulationSystemGroup>(), true);
             
             CharacterXPManager.Instance.OnLevelUp += LevelUpCallback;
         }

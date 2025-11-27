@@ -380,6 +380,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3234526166105609402, guid: b62b47108d1a59a4a9c6792175f63654, type: 3}
+      propertyPath: m_fontSize
+      value: 33
+      objectReference: {fileID: 0}
     - target: {fileID: 7450467340575868806, guid: b62b47108d1a59a4a9c6792175f63654, type: 3}
       propertyPath: m_Name
       value: UpgradePanel (1)
@@ -482,6 +486,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3234526166105609402, guid: b62b47108d1a59a4a9c6792175f63654, type: 3}
+      propertyPath: m_fontSize
+      value: 33
+      objectReference: {fileID: 0}
     - target: {fileID: 7450467340575868806, guid: b62b47108d1a59a4a9c6792175f63654, type: 3}
       propertyPath: m_Name
       value: UpgradePanel
@@ -583,6 +591,10 @@ PrefabInstance:
     - target: {fileID: 1964856078280565450, guid: b62b47108d1a59a4a9c6792175f63654, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3234526166105609402, guid: b62b47108d1a59a4a9c6792175f63654, type: 3}
+      propertyPath: m_fontSize
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 7450467340575868806, guid: b62b47108d1a59a4a9c6792175f63654, type: 3}
       propertyPath: m_Name

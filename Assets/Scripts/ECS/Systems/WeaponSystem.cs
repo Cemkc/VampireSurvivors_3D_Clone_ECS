@@ -9,6 +9,12 @@ using Unity.Transforms;
 internal partial struct WeaponSystem : ISystem
 {
     [BurstCompile]
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<GameRunningTag>();
+    }
+
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         WeaponManager weaponManager = SystemAPI.GetSingleton<WeaponManager>();

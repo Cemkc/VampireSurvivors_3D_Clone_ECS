@@ -11,13 +11,12 @@ GameObject:
   - component: {fileID: 4543613341676941309}
   - component: {fileID: 1781224310482798759}
   - component: {fileID: 2280963523287582216}
-  - component: {fileID: 9051226647458524199}
   - component: {fileID: 8557366375580514862}
-  - component: {fileID: 2803176911604712673}
-  - component: {fileID: 6598662436886552749}
+  - component: {fileID: 568444637439588271}
+  - component: {fileID: -9151484783413408206}
   - component: {fileID: 3138708986221907955}
   m_Layer: 6
-  m_Name: Mob
+  m_Name: MobOrbiting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,22 +86,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.941205, y: 1.550534, z: 0.98931}
   m_Center: {x: -0.013362467, y: 0.7402812, z: -0.005345002}
---- !u!114 &9051226647458524199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682824551111190682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afbb4aa1b3432c041852d6d8cabff05f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  rotationSpeed: 5
-  LookAtTarget: 1
-  Enabled: 1
 --- !u!114 &8557366375580514862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,8 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 2
-  targetObjectType: 1
---- !u!114 &2803176911604712673
+  targetObjectType: 0
+--- !u!114 &568444637439588271
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,11 +109,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1682824551111190682}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d614d0523ff4bff8fa16cd5ebf28323, type: 3}
+  m_Script: {fileID: 11500000, guid: f67361261f6d472681edd83cbfe4d3de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TargetObjectType: 1
---- !u!114 &6598662436886552749
+  OrbitStartDistanceSq: 400
+  MoveSpeed: 5
+  OrbitSpeed: -5
+  InwardSpeed: 5
+--- !u!114 &-9151484783413408206
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,7 +208,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d11e6205c7cc9470aacd9fde3100bfe2, type: 2}
+  - {fileID: 2100000, guid: e2dc9451411e3d547b459b1499af4c4a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

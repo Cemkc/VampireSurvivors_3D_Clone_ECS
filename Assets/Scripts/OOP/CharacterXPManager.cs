@@ -29,10 +29,11 @@ public class CharacterXPManager : MonoBehaviour
     
     private int m_CurrentXP;
     private int m_CharacterLevel;
+    
+    public int CharacterLevel => m_CharacterLevel;
 
     private Dictionary<int, LevelDefinition> m_levelDefinitions = new();
-    
-    
+
     private void Awake()
     {
         if (Instance == null)

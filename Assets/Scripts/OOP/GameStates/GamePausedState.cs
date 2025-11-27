@@ -14,8 +14,9 @@ namespace OOP.GameStates
             // Debug.Log("Entered paused state!");
             
             PlayerInput.Instance.InputActions.UI.Enable();
-            
-            SystemsUtils.SetSystemsEnabled(World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SimulationSystemGroup>(), false);
+
+            World.DefaultGameObjectInjectionWorld.QuitUpdate = true;
+            // SystemsUtils.SetSystemsEnabled(World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SimulationSystemGroup>(), false);
             
             EnableMonoBehaviours<IGamePaused>();
         }

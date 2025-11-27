@@ -10,6 +10,7 @@ internal partial struct DigitExplosionSystem : ISystem
     {
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         state.RequireForUpdate<PhysicsWorldSingleton>();
+        state.RequireForUpdate<GameRunningTag>();
     }
 
     public void OnUpdate(ref SystemState state)

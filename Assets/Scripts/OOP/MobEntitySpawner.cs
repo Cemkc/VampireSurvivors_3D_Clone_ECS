@@ -1,58 +1,110 @@
-using System;
+using System.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MobEntitySpawner : MonoBehaviour, IGameRunning
 {
+    [Header("Spawn settings")]
+    public float baseSpawnInterval = 3f;
+    public float spawnRadius = 15f;
+    public int mobsPerWave = 3;
+    public float spawnHeightOffset = 0f;
+
+    [Header("Difficulty scaling")]
+    public float levelMultiplier = 0.15f;
+    public int maxMobsPerWave = 30;
+    public float minSpawnInterval = 0.3f;
+
     private EntityManager _entityManager;
-    private Entity _entityReferencesEntity;
     private EntityReferences _entityReferences;
 
-    private void Start()
+    private Transform _player;
+    private float _timer;
+
+    IEnumerator Start()
     {
+        yield return new WaitForSeconds(2);
+        
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        _entityReferencesEntity = _entityManager.CreateEntityQuery(typeof(EntityReferences)).GetSingletonEntity();
-        _entityReferences = _entityManager.GetComponentData<EntityReferences>(_entityReferencesEntity);
+
+        var query = _entityManager.CreateEntityQuery(typeof(EntityReferences));
+        _entityReferences = _entityManager.GetComponentData<EntityReferences>(query.GetSingletonEntity());
+
+        _player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    private void Update()
+    void Update()
     {
-        if (PlayerInput.Instance.InputActions.Player.Jump.WasPerformedThisFrame())
+        int level = GetPlayerLevel();
+        float scaledInterval = GetScaledInterval(level);
+
+        _timer += Time.deltaTime;
+
+        if (_timer >= scaledInterval)
         {
-            for (int i = 0; i < 1000; i++)
-            {
-                Entity newMob = _entityManager.Instantiate(_entityReferences.MobPrefabEntity);
-                float3 position = new float3
-                {
-                    x = transform.localPosition.x + math.floor(i / 10) * 3,
-                    y = transform.localPosition.y,
-                    z = transform.localPosition.z + (i % 10) * 3,
-                };
-                _entityManager.SetComponentData(newMob, new LocalTransform
-                {
-                    Position = position,
-                    Rotation = quaternion.identity,
-                    Scale = 1,
-                });
-                
-                UnitMover unitMover = _entityManager.GetComponentData<UnitMover>(newMob);
-                unitMover.targetPosition = position;
-                _entityManager.SetComponentData(newMob, unitMover);
-            }
+            _timer = 0;
+            SpawnWave(level);
+        }
+    }
+
+    void SpawnWave(int level)
+    {
+        int amount = math.clamp(
+            mobsPerWave + Mathf.FloorToInt(level * 0.7f),
+            mobsPerWave,
+            maxMobsPerWave
+        );
+
+        for (int i = 0; i < amount; i++)
+        {
+            SpawnSingleMob();
+        }
+    }
+
+    void SpawnSingleMob()
+    {
+        float angle = UnityEngine.Random.Range(0f, 360f) * math.TORADIANS;
+        float3 pos = new float3(
+            math.cos(angle) * spawnRadius,
+            spawnHeightOffset,
+            math.sin(angle) * spawnRadius
+        ) + (float3)_player.position;
+
+        Entity mob;
+        
+        int mobTypeChance = Random.Range(0, 2);
+        if (mobTypeChance == 0)
+        {
+            mob = _entityManager.Instantiate(_entityReferences.MobPrefabEntity);
+        }
+        else
+        {
+            mob = _entityManager.Instantiate(_entityReferences.MobOrbitingPrefabEntity);    
         }
 
+        _entityManager.SetComponentData(mob, new LocalTransform
+        {
+            Position = pos,
+            Rotation = quaternion.identity,
+            Scale = 1
+        });
     }
 
-    public void OnStateEnable()
+    float GetScaledInterval(int level)
     {
-        enabled = true;
+        float value = baseSpawnInterval / (1f + level * levelMultiplier);
+        return math.max(minSpawnInterval, value);
     }
 
-    public void OnStateDisable()
+    int GetPlayerLevel()
     {
-        enabled = false;
+        // Replace this: connect to your existing level system
+        return CharacterXPManager.Instance.CharacterLevel;
     }
+
+    public void OnStateEnable() => enabled = true;
+    public void OnStateDisable() => enabled = false;
 }
-    

@@ -1,10 +1,7 @@
-using NUnit.Framework;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 partial struct ChaseTargetSystem : ISystem
 {
@@ -12,29 +9,43 @@ partial struct ChaseTargetSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+        state.RequireForUpdate<GameRunningTag>();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
-        var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
+        EntityCommandBuffer ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+            .CreateCommandBuffer(state.WorldUnmanaged);
 
-        if (!SystemAPI.TryGetSingletonBuffer(out DynamicBuffer<GameObjectInfo> goInfoBuffer))
-            return;
-
-        var goInfos = goInfoBuffer.AsNativeArray();
-        var goInfoCount = goInfos.Length;
-
-        var job = new ChaseTargetJob
+        foreach (var (unitMover, chaseTarget, entity)
+                 in SystemAPI.Query<RefRW<UnitMover>, RefRO<ChaseTargetComponent>>().WithEntityAccess())
         {
-            ECB = ecb,
-            GoInfos = goInfos,
-            GoInfoCount = goInfoCount
-        };
+            if (!SystemAPI.TryGetSingletonBuffer(out DynamicBuffer<GameObjectInfo> goInfoBuffer))
+                return;
 
-        job.ScheduleParallel();
-        
+            GameObjectInfo target = default;
+            bool targetMatch = false;
+
+            foreach (var goInfo in goInfoBuffer)
+            {
+                if (chaseTarget.ValueRO.TargetObjectType == goInfo.ObjectType)
+                {
+                    target = goInfo;
+                    targetMatch = true;
+                    break;
+                }
+            }
+
+            if (!targetMatch) continue;
+            
+            if (!unitMover.ValueRO.TargetOverrideActive)
+            {
+                unitMover.ValueRW.targetPosition = target.Position;   
+            }
+            
+        }
+
     }
     
     [BurstCompile]
@@ -56,7 +67,7 @@ partial struct ChaseTargetSystem : ISystem
 
             for (int i = 0; i < GoInfoCount; i++)
             {
-                if (chaseTargetComponent.GameObjectType == GoInfos[i].ObjectType)
+                if (chaseTargetComponent.TargetObjectType == GoInfos[i].ObjectType)
                 {
                     target = GoInfos[i];
                     targetFound = true;
@@ -71,21 +82,6 @@ partial struct ChaseTargetSystem : ISystem
             {
                 unitMover.targetPosition = target.Position;   
             }
-
-            float3 direction = target.Position - localTransform.Position;
-            float distanceSq = math.lengthsq(direction);
-
-            if (distanceSq <= chaseTargetComponent.HitDistance)
-            {
-                Entity e = ECB.CreateEntity(chunkIndex);
-                ECB.AddComponent(chunkIndex, e, new MobDamageGivenEvent
-                {
-                    Id = target.ID,
-                    Amount = chaseTargetComponent.DamageAmount
-                });
-
-                ECB.DestroyEntity(chunkIndex, entity);
-            }
-        }
+        } 
     }
 }

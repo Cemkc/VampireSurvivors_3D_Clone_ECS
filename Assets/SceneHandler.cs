@@ -12,13 +12,24 @@ public class SceneHandler : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
-            SystemsUtils.SetSystemsEnabled(World.DefaultGameObjectInjectionWorld
-                .GetOrCreateSystemManaged<SimulationSystemGroup>(), false);
+            // Debug.Log("Setting systems enabled!");
+            // World.DefaultGameObjectInjectionWorld.QuitUpdate = true;
         }
+
+        // if (SceneManager.GetActiveScene().name == "GameScene")
+        // {
+        //     Debug.Log("Setting systems enabled!");
+        //     World.DefaultGameObjectInjectionWorld.QuitUpdate = false;
+        // }
     }
 
     public void LoadSceneCallback(string name)
     {
+        if (name == "GameScene")
+        {
+            // Debug.Log("Setting systems enabled!");
+            // World.DefaultGameObjectInjectionWorld.QuitUpdate = false;
+        }
         SceneManager.LoadScene(name);
     }
 }

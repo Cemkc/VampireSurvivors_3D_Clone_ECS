@@ -13,6 +13,12 @@ using Collider = Unity.Physics.Collider;
 public partial struct WeaponOverlapSystem : ISystem
 {
     [BurstCompile]
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<GameRunningTag>();
+    }
+
+    [BurstCompile]
     public unsafe void OnUpdate(ref SystemState state)
     {
         var physicsWorldSingleton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();

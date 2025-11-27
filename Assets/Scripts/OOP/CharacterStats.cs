@@ -10,13 +10,3 @@ public class CharacterStats : ScriptableObject
     [Range(0f, 1f)]
     public float DamageDigitExplosionChance;
 }
-
-[CreateAssetMenu(fileName = "XPSettings", menuName = "Settings-Configs/XPSettings")]
-public class XPSettings : ScriptableObject
-{
-    [Header("XP gain definitions")] 
-    public int FirstLevelNeededXP;
-    public float XpGainMultiplier;
-    public int MaxNumberOfLevels;
-    public int XPIncrementMultiplier;
-}
