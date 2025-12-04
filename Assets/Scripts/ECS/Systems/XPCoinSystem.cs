@@ -28,7 +28,7 @@ internal partial struct XPCoinSystem : ISystem
         
         foreach (var mobDeathEvent in SystemAPI.Query<RefRO<MobDeathEvent>>())
         {
-            // Debug.Log("Mob is death alright");
+            // Debug.Log("Mob is dead alright");
             Entity xpCollectible = xpSpawnEcb.Instantiate(entityReferences.XPCollectable);
 
             LocalTransform localTransform = SystemAPI.GetComponent<LocalTransform>(entityReferences.XPCollectable);

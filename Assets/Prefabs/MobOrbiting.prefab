@@ -114,9 +114,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetObjectType: 1
   OrbitStartDistanceSq: 400
-  MoveSpeed: 5
+  MoveSpeed: 3
   OrbitSpeed: -5
-  InwardSpeed: 5
+  InwardSpeed: 3
 --- !u!114 &-9151484783413408206
 MonoBehaviour:
   m_ObjectHideFlags: 0

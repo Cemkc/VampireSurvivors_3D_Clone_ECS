@@ -12,6 +12,7 @@ TagManager:
   - Water
   - UI
   - Mob
+  - Env
   - 
   - 
   - 
@@ -35,8 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - None
   m_SortingLayers:
   - name: Default
     uniqueID: 0

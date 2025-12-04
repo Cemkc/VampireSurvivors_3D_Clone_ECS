@@ -8,6 +8,8 @@ public struct EntityReferences : IComponentData
     public Entity MobOrbitingPrefabEntity;
     public Entity DamageDigitPrefabEntity;
     public Entity XPCollectable;
+    public Entity DigitExplosionPrefab;
+    public Entity MobDeathVFX;
     
     public Random Random;
 }
@@ -18,6 +20,8 @@ public class EntitiesReferencesAuthoring : MonoBehaviour
     public GameObject MobOrbitingPrefabGameObject;
     public GameObject DamageDigitPrefabGameObject;
     public GameObject XPCollectable;
+    public GameObject DigitExplosionPrefab;
+    public GameObject MobDeathVFX;
     
     public class Baker : Baker<EntitiesReferencesAuthoring>
     {
@@ -30,6 +34,7 @@ public class EntitiesReferencesAuthoring : MonoBehaviour
                 MobOrbitingPrefabEntity = GetEntity(authoring.MobOrbitingPrefabGameObject, TransformUsageFlags.Dynamic),
                 DamageDigitPrefabEntity = GetEntity(authoring.DamageDigitPrefabGameObject, TransformUsageFlags.Dynamic),
                 XPCollectable = GetEntity(authoring.XPCollectable, TransformUsageFlags.Dynamic),
+                DigitExplosionPrefab = GetEntity(authoring.DigitExplosionPrefab, TransformUsageFlags.Dynamic),
                 Random = new Random((uint)UnityEngine.Random.Range(0, 1000)),
             });
         }

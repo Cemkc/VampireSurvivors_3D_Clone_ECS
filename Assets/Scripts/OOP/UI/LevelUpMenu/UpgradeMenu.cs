@@ -9,7 +9,6 @@ public class UpgradeMenu : MonoBehaviour, IGameLevelUp
 
     private void Awake()
     {
-        Debug.Log("Subscribing to the event!");
         LevelUpManager.Instance.OnUpgradesAssigned += UpgradesAssignedCallback;
     }
 
@@ -20,13 +19,11 @@ public class UpgradeMenu : MonoBehaviour, IGameLevelUp
 
     private void UpgradesAssignedCallback(List<CharUpgrade> upgrades)
     {
-        Debug.Log("Callback has heard!");
         for (int i = 0; i < upgrades.Count; i++)
         {
             var upgradePanelTransform = m_UpgradeVerticalLayoutGroup.transform.GetChild(i);
             if (upgradePanelTransform.TryGetComponent(out UpgradePanel panel))
             {
-                Debug.Log("Setting a panel for the upgrade " + upgrades[i].Description);
                 panel.SetUpgrade(upgrades[i]);
             }
         }
