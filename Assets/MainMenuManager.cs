@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
+        AudioManager.Instance.Play(SoundLabel.MainMenuMusic);
+    }
+
+    private void OnDisable()
+    {
+        AudioManager.Instance.Stop(SoundLabel.MainMenuMusic);
     }
 }

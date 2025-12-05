@@ -1,50 +1,81 @@
 using System;
-using System.Drawing;
 using UnityEngine;
 
 public class HUDManager : MonoBehaviour
 {
+    [Header("UI References")]
     [SerializeField] private RectTransform m_XPFillBar;
-    private float m_MaxFillAmount;
-    private float m_CurrentFillAmount;
+    [SerializeField] private RectTransform m_HealthFillBar;
+    
+    private CharacterHealthManager m_HealthManager;
+    
+    private float m_XPMaxWidth;
+    private float m_HealthMaxWidth;
 
     private void Awake()
     {
-        m_MaxFillAmount = m_XPFillBar.sizeDelta.x;
-        m_CurrentFillAmount = 0;
-        
-        m_XPFillBar.sizeDelta = new Vector2(0f, m_XPFillBar.sizeDelta.y);
+        if (m_XPFillBar != null)
+        {
+            m_XPMaxWidth = m_XPFillBar.sizeDelta.x;
+            m_XPFillBar.sizeDelta = new Vector2(0f, m_XPFillBar.sizeDelta.y); 
+        }
+
+        if (m_HealthFillBar != null)
+        {
+            m_HealthMaxWidth = m_HealthFillBar.sizeDelta.x;
+        }
     }
 
     private void Start()
     {
-        if(CharacterXPManager.Instance) CharacterXPManager.Instance.OnXPGain += GainXPCallback;
+        if(CharacterXPManager.Instance) 
+            CharacterXPManager.Instance.OnXPGain += GainXPCallback;
+        
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            m_HealthManager = player.GetComponent<CharacterHealthManager>();
+        }
     }
 
     private void OnEnable()
     {
-        if(CharacterXPManager.Instance) CharacterXPManager.Instance.OnXPGain += GainXPCallback;
+        if(CharacterXPManager.Instance) 
+            CharacterXPManager.Instance.OnXPGain += GainXPCallback;
     }
 
     private void OnDisable()
     {
-        if(CharacterXPManager.Instance) CharacterXPManager.Instance.OnXPGain -= GainXPCallback;
+        if(CharacterXPManager.Instance) 
+            CharacterXPManager.Instance.OnXPGain -= GainXPCallback;
+    }
+
+    private void Update()
+    {
+        if (m_HealthManager != null)
+        {
+            SetFillBar(m_HealthFillBar, m_HealthManager.GetHealthPercentage(), m_HealthMaxWidth);
+        }
     }
 
     public void GainXPCallback(XPGainEventInfo info)
     {
+        if (info.NextLevelRequiredXP == 0) return; 
+        
         float percentage = (float)info.CurrentXP / info.NextLevelRequiredXP;
-        // Debug.Log($"[XP Debug] CurrentXP: {info.CurrentXP}, NextLevelXP: {info.NextLevelRequiredXP}, Percentage: {percentage:P2}");
-
-        SetFillBar(percentage);
+        
+        SetFillBar(m_XPFillBar, percentage, m_XPMaxWidth);
     }
-
-    public void SetFillBar(float percentage)
+    
+    public void SetFillBar(RectTransform rectTransform, float percentage, float maxWidth)
     {
-        float fillAmount = percentage * m_MaxFillAmount;
-        m_CurrentFillAmount = Mathf.Clamp(fillAmount, 0, m_MaxFillAmount);
+        if (rectTransform == null) return;
 
-        Vector2 XPBarSizeDelta = m_XPFillBar.sizeDelta;
-        m_XPFillBar.sizeDelta = new Vector2(m_CurrentFillAmount, XPBarSizeDelta.y);
+        float fillAmount = percentage * maxWidth;
+        
+        float clampedWidth = Mathf.Clamp(fillAmount, 0, maxWidth);
+
+        Vector2 sizeDelta = rectTransform.sizeDelta;
+        rectTransform.sizeDelta = new Vector2(clampedWidth, sizeDelta.y);
     }
 }

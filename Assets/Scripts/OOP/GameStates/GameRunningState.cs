@@ -9,13 +9,23 @@ namespace OOP.GameStates
         private SimulationSystemGroup _simulationSystemGroup;
         
         public GameRunningState(GameStateMachineRunner context, GameStateFactory factory) : base(context, factory) { }
-        
+
+        public override void Init()
+        {
+        }
+
         public override void EnterState()
         {
             // Debug.Log("Game is running!");
             PlayerInput.Instance.InputActions.Player.Enable();
             
             EnableMonoBehaviours<IGameRunning>(true);
+
+            if (!AudioManager.Instance.IsPlaying(SoundLabel.InGameMusic))
+            {
+                AudioManager.Instance.Play(SoundLabel.InGameMusic);   
+            }
+            AudioManager.Instance.SetMuffled(false);
             
             World.DefaultGameObjectInjectionWorld.QuitUpdate = false;
             // SystemsUtils.SetSystemsEnabled(World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SimulationSystemGroup>(), true);
@@ -44,7 +54,7 @@ namespace OOP.GameStates
         {
             if (PlayerInput.Instance.InputActions.Player.Pause.WasPerformedThisFrame())
             {
-                SwitchState(_factory.GetGameState(GameStateType.Paused));
+                SwitchState(_factory.GetGameState(GameStateType.PlayerPause));
             }
         }
 

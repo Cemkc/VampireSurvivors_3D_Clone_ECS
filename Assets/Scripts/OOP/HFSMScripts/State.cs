@@ -14,7 +14,8 @@ namespace OOP.HFSMScripts
         public State(){}
 
         public State SubState => m_SubState;
-
+        
+        public abstract void Init();
         public abstract void EnterState();
 
         protected abstract void UpdateState();
@@ -31,6 +32,7 @@ namespace OOP.HFSMScripts
                 UpdateStates(state.m_SuperState);
             }
             
+            // Debug.Log("Updating state: " + state.GetType());
             state.UpdateState();
         }
 
@@ -65,15 +67,8 @@ namespace OOP.HFSMScripts
         {
             ExitStates(this);
             EnterStates(newState);
-
-            State rootState = newState;
-
-            while (rootState.m_SuperState != null)
-            {
-                rootState = rootState.m_SuperState;
-            }
             
-            _context.SetRunnerState(rootState);
+            _context.SetRunnerState(newState);
         }
 
         protected void SetSuperState(State superState){

@@ -29,5 +29,10 @@ public class CharacterHealthManager : Targetable
         
         OnDamageTaken?.Invoke(damageAmount);
     }
+
+    public float GetHealthPercentage()
+    {
+        return (float)m_Health / _characterStats.Health;
+    }
 }
     

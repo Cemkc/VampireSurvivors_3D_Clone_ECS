@@ -7,9 +7,9 @@ namespace OOP.GameStates
 {
     public enum GameStateType
     {
-        None,
         Running,
         Paused,
+        PlayerPause,
         LevelUp,
         GameOver,
     }
@@ -32,6 +32,9 @@ namespace OOP.GameStates
                     case GameStateType.Paused:
                         _gameStates.Add(GameStateType.Paused, new GamePausedState(stateMachineRunner, this));
                         break;
+                    case GameStateType.PlayerPause:
+                        _gameStates.Add(GameStateType.PlayerPause, new GamePlayerPausedState(stateMachineRunner, this));
+                        break;
                     case GameStateType.LevelUp:
                         _gameStates.Add(GameStateType.LevelUp, new LevelUpState(stateMachineRunner, this));
                         break;
@@ -50,9 +53,18 @@ namespace OOP.GameStates
             _gameStates.TryGetValue(stateType, out State gameState);
             if (gameState == null)
             {
-                Debug.LogError("Game State is null");
+                return null;
             }
+
             return gameState;
+        }
+
+        public void WireStates()
+        {
+            foreach (GameStateType type in Enum.GetValues(typeof(GameStateType)))
+            {
+                GetGameState(type)?.Init();
+            }
         }
         
     }

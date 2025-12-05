@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c0efc6e55f0439eb3a0efd93a21cc1f, type: 3}
   m_Name: XPSettings
   m_EditorClassIdentifier: 
-  FirstLevelNeededXP: 50
-  XpGainMultiplier: 2
+  FirstLevelNeededXP: 25
+  XpGainMultiplier: 1.3
   MaxNumberOfLevels: 0
   XPIncrementMultiplier: 0

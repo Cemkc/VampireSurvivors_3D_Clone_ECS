@@ -13,6 +13,7 @@ namespace OOP.GameStates
         void Awake()
         {
             _factory = new GameStateFactory(this);
+            _factory.WireStates();
 
             _gameState = _factory.GetGameState(GameStateType.Running);
         }

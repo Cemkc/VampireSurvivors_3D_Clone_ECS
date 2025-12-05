@@ -8,12 +8,18 @@ namespace OOP.GameStates
     public class GamePausedState : GameState
     {
         public GamePausedState(GameStateMachineRunner context, GameStateFactory factory) : base(context, factory) { }
-        
+
+        public override void Init()
+        {
+        }
+
         public override void EnterState()
         {
             // Debug.Log("Entered paused state!");
             
             PlayerInput.Instance.InputActions.UI.Enable();
+            
+            AudioManager.Instance.SetMuffled(true);
 
             World.DefaultGameObjectInjectionWorld.QuitUpdate = true;
             // SystemsUtils.SetSystemsEnabled(World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SimulationSystemGroup>(), false);
@@ -23,7 +29,6 @@ namespace OOP.GameStates
 
         protected override void UpdateState()
         {
-            CheckSwitchState();
         }
 
         public override void FixedUpdateState()
@@ -38,11 +43,6 @@ namespace OOP.GameStates
 
         public override void CheckSwitchState()
         {
-            if (PlayerInput.Instance.InputActions.UI.Unpause.WasPerformedThisFrame())
-            {
-                Debug.Log("Switch that state please");
-                SwitchState(_factory.GetGameState(GameStateType.Running));
-            }
         }
     }
 }

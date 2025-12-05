@@ -5,7 +5,8 @@ public enum UpgradeTypes
 {
     None,
     Speed,
-    Weapon,
+    WeaponDamage,
+    WeaponSpeed,
     DigitBomb,
 }
 

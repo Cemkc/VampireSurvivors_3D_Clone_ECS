@@ -6,7 +6,11 @@ namespace OOP.GameStates
     {
         public GameOverState(GameStateMachineRunner context, GameStateFactory factory) : base(context, factory)
         {
-            SetSuperState(_factory.GetGameState(GameStateType.Paused));
+        }
+
+        public override void Init()
+        {
+            SetSuperState(_factory.GetGameState(GameStateType.Paused));   
         }
 
         public override void EnterState()
@@ -14,6 +18,8 @@ namespace OOP.GameStates
             // Debug.Log("Entered Level up state!");
             
             EnableMonoBehaviours<IGameOver>(false);
+            
+            AudioManager.Instance.Play(SoundLabel.PlayerDeathSound);
 
             LevelUpManager.Instance.OnUpgradeApplied += OnUpgradeAppliedCallback;
         }

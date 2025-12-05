@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d03ce65a9be4cb5a4f95b5e4fd234e5, type: 3}
   m_Name: WeaponUpgrade
   m_EditorClassIdentifier: 
-  m_Texture: {fileID: 2800000, guid: 8185f3757a8a496458bf5b9e2b48ccf8, type: 3}
+  m_Texture: {fileID: 2800000, guid: 75b002f5320d0204fbb110edd8b21bbd, type: 3}
   m_Description: INCREASE DAMAGE OF ROTATING WEAPON BY 1

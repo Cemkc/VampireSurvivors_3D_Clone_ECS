@@ -27,6 +27,8 @@ public partial class DamageBridgeSystem : SystemBase
             if (_targetables.TryGetValue(damageEvent.ValueRO.Id, out Targetable targetable))
             {
                 targetable.TakeDamage(damageEvent.ValueRO.Amount);
+                AudioManager.Instance.Play(SoundLabel.MobGiveDamageSound);
+                
             }
         }
     }
